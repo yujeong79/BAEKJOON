@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class 파이프옮기기1 {	
+public class Main_17070_파이프옮기기1 {	
 	static int N;
 	static int[][] house; // 집
 	
