@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class Main_BAEKJOON_TEST {
 	static StringBuilder sb = new StringBuilder();
 	
 	static int N;
