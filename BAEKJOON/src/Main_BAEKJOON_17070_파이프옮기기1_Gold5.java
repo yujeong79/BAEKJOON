@@ -14,10 +14,28 @@ import java.util.*;
 
 public class Main_BAEKJOON_17070_파이프옮기기1_Gold5 {	
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	
+	private static int N; // N*N 맵
 
+	private static char[][] map;
+	
 	
 	public static void main(String[] args) throws IOException {
-
+		N = Integer.parseInt(br.readLine());
+		
+		map = new char[N][N];
+		for(int i = 0; i < N; i++) {
+			String row = br.readLine();
+			for(int j = 0, c = 0; j < N; j++, c+=2) {
+				map[i][j] = row.charAt(c);
+			}
+		}
+		
+		map[0][0] = '-'; map[0][1] = '-';
+		
+		for(char[] r : map) {
+			System.out.println(Arrays.toString(r));
+		}
 		
 	} // end of main
 } // end of class
