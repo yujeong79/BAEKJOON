@@ -44,7 +44,7 @@ public class Main_BAEKJOON_17070_파이프옮기기1_Gold5 {
 
 
 	private static void movePipe() {
-		if(map[N-1][N-1] == '-') { // 파이프가 (N,N)에 도착했으면 종료
+		if(r2 >= N-1 && c2 >= N-1) { // 파이프가 (N,N)에 도착했으면 종료
 			answer++;
 			return;
 		}
@@ -52,8 +52,8 @@ public class Main_BAEKJOON_17070_파이프옮기기1_Gold5 {
 		for(char[] r : map) {
 			System.out.println(Arrays.toString(r));
 		}
-		
-		System.out.println();
+		System.out.println(r1 + ", " + c1);
+		System.out.println(r2 + ", " + c2);
 		
 		int d = pipeDirection();
 
@@ -66,10 +66,11 @@ public class Main_BAEKJOON_17070_파이프옮기기1_Gold5 {
 					
 					map[r1][c1] = '0';
 					c1++; c2++;
-					map[r1][c2] = '-';
+					map[r2][c2] = '-';
 					
 					movePipe(); // 이어서 이동
 				}
+				else System.out.println("가로 이동 실패");
 			}
 		
 			if(!isPromising(1) || isVisited[r1][c1] == 1) { // 더이상 가로 방향으로 이동할 수 없거나 이전에 가로 방향으로 이동한 적이 있다면
@@ -78,6 +79,7 @@ public class Main_BAEKJOON_17070_파이프옮기기1_Gold5 {
 					
 					map[r1][c1] = '0';
 					c1++; r2++; c2++;
+					System.out.println(r2 + ", " + c2);
 					map[r2][c2] = '-';
 					
 					movePipe();
@@ -129,8 +131,10 @@ public class Main_BAEKJOON_17070_파이프옮기기1_Gold5 {
 					r1++; c1++; r2++; 
 					map[r2][c2] = '-';
 					
+					System.out.println("세로방향성공");
 					movePipe(); // 이어서 이동
 				}
+				System.out.println("세로방향실패");
 			}
 		
 			if(!isPromising(1) || !isPromising(2) ||  isVisited[r1][c1] == 1 || isVisited[r1][c1] == 2) { // 이 전에 세로 방향으로 이동한 적이 있다면
@@ -156,13 +160,32 @@ public class Main_BAEKJOON_17070_파이프옮기기1_Gold5 {
 	private static boolean isPromising(int d) {
 		switch(d) {
 		case(1):
-			if(c2 + 1 <= N-1 && map[r2][c2 + 1] != 1) return true; 
+			if(c2 + 1 < N-1 && map[r2][c2 + 1] != 1) return true; 
+			switch(pipeDirection()) {
+			case(1):
+				if(c2 + 1 == N-1 && r2 == N-1) return true;
+			case(3):
+				if(c2 + 1 == N-1 && r2 == N-1) return true;
+			}
 			break;
 		case(2):
-			if(r2 + 1 <= N-1 && map[r2 + 1][c2] != 1) return true;
+			if(r2 + 1 < N-1 && map[r2 + 1][c2] != 1) return true;
+			switch(pipeDirection()) {
+			case(2):
+				System.out.println(c2 + ", " + (r2+1));
+				if(c2 == N-1 && r2 + 1 == N-1) return true; break;
+			case(3):
+				if(c2 + 1 == N-1 && r2 == N-1) return true;
+			}
 			break;
 		case(3):
-			if(r2 + 1 < N-1 && c2 + 1 < N-1 && map[r2][c2 + 1] != 1 && map[r2+1][c2] != 1 && map[r2+1][c2+1] != 1) return true;
+			if(map[r2][c2 + 1] != 1 && map[r2+1][c2] != 1 && map[r2+1][c2+1] != 1) return true;
+			switch(pipeDirection()) {
+			case(2):
+				if(c2 == N-1 && r2 + 1 == N-1) return true;
+			case(3):
+				if(c2 + 1 == N-1 && r2 == N-1) return true;
+			}
 			break;
 		}
 		return false;
