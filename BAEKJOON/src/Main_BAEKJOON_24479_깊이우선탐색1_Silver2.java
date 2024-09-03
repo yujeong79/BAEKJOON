@@ -9,7 +9,8 @@ public class Main_BAEKJOON_24479_깊이우선탐색1_Silver2 {
 	private static int R;
 	
 	private static List<Integer>[] adjList;
-	private static boolean[] isVisited;
+	private static int[] isVisited;
+	private static int cnt = 1;
 	
 	public static void main(String[] args) throws IOException {
 		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
@@ -17,7 +18,7 @@ public class Main_BAEKJOON_24479_깊이우선탐색1_Silver2 {
 		M = Integer.parseInt(st.nextToken()); // 간선의 수
 		R = Integer.parseInt(st.nextToken()); // 시작 정점
 		
-		isVisited = new boolean[N+1];
+		isVisited = new int[N+1];
 		adjList = new ArrayList[N+1];
 		for(int i = 1; i <= N; i++) {
 			adjList[i] = new ArrayList<>();
@@ -38,17 +39,15 @@ public class Main_BAEKJOON_24479_깊이우선탐색1_Silver2 {
 		
 		DFS(R);
 		for(int i = 1; i <= N; i++) {
-			if(!isVisited[i])
-				System.out.println(0);
+			System.out.println(isVisited[i]);
 		}
 	}
 
 	private static void DFS(int node) {
-		isVisited[node] = true;
-		System.out.println(node);
+		isVisited[node] = cnt++;
 		 
 		for(int w : adjList[node]) {
-			if(!isVisited[w])
+			if(isVisited[w] == 0)
 				DFS(w);
 		}
 	}
