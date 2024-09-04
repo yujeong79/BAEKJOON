@@ -117,18 +117,17 @@ public class Main_BAEKJOON_17406_배열돌리기4_Gold4 {
 					if(temp[i][j] != 0) matrix[i][j] = temp[i][j];
 				}
 			}
-			
-			int arrValue = Integer.MAX_VALUE;
-			// 회전 연산을 모두 수행
-			for(int i = 0; i < N; i++) {
-				int rowSum = 0;
-				for(int j = 0; j < M; j++) {
-					rowSum += matrix[i][j];
-				}
-				arrValue = Math.min(arrValue, rowSum);
-			}
-			
-			answer = Math.min(answer, arrValue);
 		}
+		int arrValue = Integer.MAX_VALUE;
+		// 회전 연산을 모두 수행
+		for(int i = 0; i < N; i++) {
+			int rowSum = 0;
+			for(int j = 0; j < M; j++) {
+				rowSum += matrix[i][j];
+			}
+			arrValue = Math.min(arrValue, rowSum);
+		}
+		
+		answer = Math.min(answer, arrValue);
 	}
 }
