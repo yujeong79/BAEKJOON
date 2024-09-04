@@ -11,7 +11,6 @@ public class Main_BAEKJOON_2667_단지번호붙이기_Silver1 {
 	
 	private static int N;
 	private static int[][] map;
-	//private static boolean[][] isVisited;
 	
 	private static int cnt;
 	private static List<Integer> answer;
@@ -20,7 +19,6 @@ public class Main_BAEKJOON_2667_단지번호붙이기_Silver1 {
 	public static void main(String[] args) throws IOException {
 		N = Integer.parseInt(br.readLine());
 		
-		//isVisited = new boolean[N+2][N+2];
 		map = new int[N+2][N+2];
 		for(int i = 1; i <= N; i++) {
 			String row = br.readLine();
