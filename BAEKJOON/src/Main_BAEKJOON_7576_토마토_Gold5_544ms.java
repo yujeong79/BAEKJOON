@@ -6,13 +6,14 @@ import java.util.*;
  * 저장될 때부터 모든 토마토가 익어 있으면 0을 출력, 토마토가 모두 익지 못하는 상황이면 -1 출력
  */
 
-public class Main_BAEKJOON_7576_토마토_Gold5_000ms {
+public class Main_BAEKJOON_7576_토마토_Gold5_544ms {
 	static class Point {
-		int r, c;
+		int r, c, day;
 
-		public Point(int r, int c) {
+		public Point(int r, int c, int d) {
 			this.r = r;
 			this.c = c;
+			this.day = d;
 		}
 
 		@Override
@@ -34,7 +35,10 @@ public class Main_BAEKJOON_7576_토마토_Gold5_000ms {
 	static int ripen;
 	static int unripen;
 	static int empty;
-	static int day;
+	
+	static int answer = 0;
+	
+	static int[][] dayStorage;
 	
 	public static void main(String[] args) throws IOException {
 		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
@@ -57,44 +61,41 @@ public class Main_BAEKJOON_7576_토마토_Gold5_000ms {
 		
 		if(ripen == N*M - empty) System.out.println(0);
 		else {
-			day = 0;
-			for(int i = 0; i < N; i++) {
-				for(int j = 0; j < M; j++) {
-					if(box[i][j] == 1 && !isVisited[i][j]) { 
-						BFS(i, j);
-					}
-				}
-			}
-			
+			BFS();
+	
 			if(unripen >= 1) System.out.println(-1);
-			else System.out.println(day);
+			else System.out.println(answer);
 		}
 		
 	} // end of main
 
-	private static void BFS(int i, int j) {
+	private static void BFS() {
 		Queue<Point> queue = new LinkedList<>();
 		
-		queue.add(new Point(i, j));
-		isVisited[i][j] = true;
-		
-		while(!queue.isEmpty()) {
-			qSize = queue.size(); 
-			while(qSize-- > 0) {
-				Point curr = queue.poll();
-				
-				for(int d = 0; d < 4; d++) {
-					int r = curr.r + dr[d];
-					int c = curr.c + dc[d];
-					if(r >= 0 && r < N && c >= 0 && c < M && box[r][c] == 0 && !isVisited[r][c]) {
-						queue.add(new Point(r, c));
-						box[r][c] = 1;
-						unripen--;
-						isVisited[r][c] = true;
-					}
+		for(int i = 0; i < N; i++) {
+			for(int j = 0; j < M; j++) {
+				if(box[i][j] == 1) {
+					queue.add(new Point(i, j, 0));
+					isVisited[i][j] = true;
 				}
 			}
-			if(!queue.isEmpty()) day++;
+		}
+		
+		while(!queue.isEmpty()) {
+			Point curr = queue.poll();
+			
+			for(int d = 0; d < 4; d++) {
+				int r = curr.r + dr[d];
+				int c = curr.c + dc[d];
+				if(r >= 0 && r < N && c >= 0 && c < M && box[r][c] == 0 && !isVisited[r][c]) {
+					queue.add(new Point(r, c, curr.day+1));
+					answer = Math.max(answer, curr.day+1);
+					box[r][c] = 1;
+					unripen--;
+					isVisited[r][c] = true;
+				}
+			}
+			
 		}
 	}
 	
