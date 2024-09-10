@@ -79,7 +79,7 @@ public class Main_BAEKJOON_7576_토마토_Gold5_000ms {
 		isVisited[i][j] = true;
 		
 		while(!queue.isEmpty()) {
-			qSize = queue.size();
+			qSize = queue.size(); 
 			while(qSize-- > 0) {
 				Point curr = queue.poll();
 				
