@@ -57,6 +57,7 @@ public class Main_BAEKJOON_14502_연구소_Gold4_456ms {
 				}
 			}
 			
+			// 이렇게 세지 말고 처음부터 카운팅을 해서 빼기를 해보자
 			int safeArea = 0;
 			for(int i = 0; i < N; i++) {
 				for(int j = 0; j < M; j++) {
