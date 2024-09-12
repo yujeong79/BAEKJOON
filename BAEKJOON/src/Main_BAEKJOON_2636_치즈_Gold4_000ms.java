@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * 
+ * 밖에서 부터 0을 탐색하기!!
  */
 public class Main_BAEKJOON_2636_치즈_Gold4_000ms {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
