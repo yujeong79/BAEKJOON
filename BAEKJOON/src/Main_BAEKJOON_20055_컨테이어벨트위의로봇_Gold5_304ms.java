@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main_BAEKJOON_20055_컨테이어벨트위의로봇_Gold5_000ms {
+public class Main_BAEKJOON_20055_컨테이어벨트위의로봇_Gold5_304ms {
 	static class Space {
 		int durability;
 		boolean robot;
@@ -64,15 +64,15 @@ public class Main_BAEKJOON_20055_컨테이어벨트위의로봇_Gold5_000ms {
 			if(conbeyerBelt.get(N-1).robot) conbeyerBelt.get(N-1).robot = false; 
 			
 			// 3. 올리는 위치에 로봇 올리기
-			conbeyerBelt.get(0).robot = true;
-			conbeyerBelt.get(0).durability--;
-			if(conbeyerBelt.get(0).durability == 0) zeroCount++;
+			if(conbeyerBelt.get(0).durability > 0) {
+				conbeyerBelt.get(0).robot = true;
+				conbeyerBelt.get(0).durability--;
+				if(conbeyerBelt.get(0).durability == 0) zeroCount++;
+			}
 			
 			level++;
-			
 		}
 		
 		System.out.println(level);
-		
 	} // end of main
 } // end of class
