@@ -5,7 +5,7 @@ import java.util.*;
  * 모든 노드들을 순회하면서 지름 구하기
  */
 
-public class Main_BAEKJOON_1967_트리의지름_000ms {
+public class Main_BAEKJOON_1967_트리의지름_Gold4_1264ms {
 	static class Node { // 각 노드에는 본인과 자식들 간의 가중치를 각각 저장
 		List<Weight> children = new ArrayList<>();
 		
@@ -45,7 +45,7 @@ public class Main_BAEKJOON_1967_트리의지름_000ms {
 		
 		// tree[i]가 null이면 자식이 없다는 것을 의미
 		for(int t = 1; t <= N; t++) {
-			if(tree[t] != null && tree[t].children.size() >= 2) {
+			if(tree[t] != null) {
 				List<Integer> halfdiameterList = new ArrayList<>();
 				
 				for(Weight w : tree[t].children) {
@@ -54,8 +54,12 @@ public class Main_BAEKJOON_1967_트리의지름_000ms {
 					halfdiameterList.add(halfdiameter);
 				}
 	
-				Collections.sort(halfdiameterList, Collections.reverseOrder());
-				maxDiameter = Math.max(halfdiameterList.get(0) + halfdiameterList.get(1), maxDiameter);
+				if(halfdiameterList.size() <= 1) 
+					maxDiameter = Math.max(halfdiameterList.get(0), maxDiameter);
+				else {
+					Collections.sort(halfdiameterList, Collections.reverseOrder());
+					maxDiameter = Math.max(halfdiameterList.get(0) + halfdiameterList.get(1), maxDiameter);
+				}
 			}
 		}
 		
