@@ -5,7 +5,22 @@ import java.util.*;
  * 방법1. 등산할 때의 최소 시간을 구하는 다익스트라와 하산할 때의 최소 시간을 구하는 다익스트라를 따로 구해서 둘이 합치는 방법
  */
 
-public class Main_BAEKJOON_1486_등산_Gold2_1536ms {
+public class Main_BAEKJOON_1486_등산_Gold2_1472ms {
+	static class Point implements Comparable<Point>{
+		int r, c, h;
+
+		public Point(int r, int c, int h) {
+			this.r = r;
+			this.c = c;
+			this.h = h;
+		}
+
+		@Override
+		public int compareTo(Point o) {
+			return o.h - this.h; // 내림차순으로 정렬되도록
+		}
+	}
+	
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	
 	static int INF;
@@ -13,6 +28,7 @@ public class Main_BAEKJOON_1486_등산_Gold2_1536ms {
 	
 	static int N, M, T, D, lastPoint;
 	static int[][] map, climbUpTime, climbDownTime;
+	static Queue<Point> pq = new PriorityQueue<>();
 	
 	public static void main(String[] args) throws IOException {
 		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
@@ -33,6 +49,7 @@ public class Main_BAEKJOON_1486_등산_Gold2_1536ms {
 			for(int j = 0; j < M; j++) {
 				if(line.charAt(j) >= 'a') map[i][j] = line.charAt(j) - 71;
 				else map[i][j] = line.charAt(j) - 'A';
+				pq.add(new Point(i, j, map[i][j]));
 			}
 		}
 		
@@ -43,37 +60,40 @@ public class Main_BAEKJOON_1486_등산_Gold2_1536ms {
 			Arrays.fill(climbUpTime[i], INF);
 		}
 		
-		climbUp(0);
+		climb(0);
 		
 		int highest = 0;
-		for(int i = 0; i < N*M; i++) { // !!! 이렇게 0부터 모든 좌표의 하산 시간을 계산하는 것은 낭비 아닐까?, 가장 높은 위치에서부터 계산해서 D 시간 이내이면 멈추게 해볼까?	
-			climbDown(i);
+		while(!pq.isEmpty()) {
+			Point p = pq.poll();
+			int start = p.r*M + p.c%M;
+			climb(start);
 			
-			int R = i / M;
-			int C = i % M;
-			
-			if((climbUpTime[R][C] + climbDownTime[0][0]) >= 0 && (climbUpTime[R][C] + climbDownTime[0][0]) <= D && map[R][C] > highest) {
-				highest = map[R][C];
+			if(climbUpTime[p.r][p.c] + climbDownTime[0][0] <= D) {
+				System.out.println(map[p.r][p.c]);
+				break;
 			}
 		}
-		
-		
-		
-		System.out.println(highest);
 		
 	} // end of main
 
 	// climbUp과 climbDown도 얕은 복사를 사용해서 두 메소드를 하나로 합칠 수는 없을까?	
-	// 해결해야하는 문제 1. 시작 위치를 매개변수로 넘겨주어야 한다.
-	// 해결해야하는 문제 2. 등산인지 하산인지에 따라 걸리는 시간을 저장할 2차원 배열을 다르게 지정해주어야 한다.	
-	private static void climbDown(int departure) {
-		for(int i = 0; i < N; i++) { // 하산은 하산 시작 지점이 매번 달라지므로 climbDown에서 무한대로 초기화
-			Arrays.fill(climbDownTime[i], INF);
+	// 해결해야하는 문제. 등산인지 하산인지에 따라 걸리는 시간을 저장할 2차원 배열을 다르게 지정해주어야 한다.	
+	private static void climb(int start) {
+		int[][] time = new int[N][M];
+		
+		if(start != 0) {
+			for(int i = 0; i < N; i++) { // 하산은 하산 시작 지점이 매번 달라지므로 climbDown에서 무한대로 초기화
+				Arrays.fill(climbDownTime[i], INF);
+			}
+			time = climbDownTime;
+		} else {
+			time = climbUpTime;
 		}
 		
-		int R = departure/M;
-		int C = departure%M;
-		climbDownTime[R][C] = 0; // 시작지점을 0으로 갱신
+		
+		int R = start/M;
+		int C = start%M;
+		time[R][C] = 0; // 시작지점을 0으로 갱신
 		
 		boolean[][] isVisited = new boolean[N][M];
 		
@@ -85,8 +105,8 @@ public class Main_BAEKJOON_1486_등산_Gold2_1536ms {
 			for(int j = 0; j < lastPoint; j++) {
 				R = j / M;
 				C = j % M;
-				if(!isVisited[R][C] && climbDownTime[R][C] < min) {
-					min = climbDownTime[R][C];
+				if(!isVisited[R][C] && time[R][C] < min) {
+					min = time[R][C];
 					curr = j;
 				}
 			}
@@ -103,64 +123,17 @@ public class Main_BAEKJOON_1486_등산_Gold2_1536ms {
 				if(nr >= 0 && nr < N && nc >= 0 && nc < M) {
 					if(!isVisited[nr][nc] && Math.abs(map[nr][nc] - map[R][C]) <= T) { // 아직 방문하지 않았고 두 지점의 높이 차가 T 이내이면 이동 가능
 						if(map[nr][nc] > map[R][C]) { // 현 위치보다 높다면 두 위치의 높이의 차이의 제곱만큼 시간이 걸림
-							if(climbDownTime[nr][nc] > climbDownTime[R][C] + Math.pow(map[nr][nc]-map[R][C], 2)) {
-								climbDownTime[nr][nc] = (int) (climbDownTime[R][C] + Math.pow(map[nr][nc]-map[R][C], 2));
+							if(time[nr][nc] > time[R][C] + Math.pow(map[nr][nc]-map[R][C], 2)) {
+								time[nr][nc] = (int) (time[R][C] + Math.pow(map[nr][nc]-map[R][C], 2));
 							}
 						} else { // 현 위치보다 낮다면 1초 증가
-							if(climbDownTime[nr][nc] > climbDownTime[R][C] + 1) {
-								climbDownTime[nr][nc] = climbDownTime[R][C] + 1;
+							if(time[nr][nc] > time[R][C] + 1) {
+								time[nr][nc] = time[R][C] + 1;
 							}
 						}
 					}
 				}
 			}			
-		}
-		
-	}
-
-	private static void climbUp(int point) {
-		int R = point / M;
-		int C = point % M;
-
-		climbUpTime[R][C] = 0;
-		
-		boolean[][] isVisited = new boolean[N][M];
-		
-		for(int i = 0; i < N*M; i++) {
-			int min = INF;
-			int curr = -1;
-			
-			for(int j = 0; j < N*M; j++) {
-				R = j / M;
-				C = j % M;
-				if(!isVisited[R][C] && climbUpTime[R][C] < min) {
-					min = climbUpTime[R][C];
-					curr = j;
-				}
-			}
-			
-			if(curr == -1) break;
-			R = curr/M;
-			C = curr%M;
-			isVisited[R][C] = true;
-			
-			for(int d = 0; d < 4; d++) {
-				int nr = R + dir[d][0];
-				int nc = C + dir[d][1];
-				if(nr >= 0 && nr < N && nc >= 0 && nc < M) {
-					if(!isVisited[nr][nc] && Math.abs(map[nr][nc] - map[R][C]) <= T) { // 아직 방문하지 않았고 두 지점의 높이 차가 T 이내이면 이동 가능
-						if(map[nr][nc] > map[R][C]) { // 현 위치보다 높다면 두 위치의 높이의 차이의 제곱만큼 시간이 걸림
-							if(climbUpTime[nr][nc] > climbUpTime[R][C] + Math.pow(map[nr][nc]-map[R][C], 2)) {
-								climbUpTime[nr][nc] = (int) (climbUpTime[R][C] + Math.pow(map[nr][nc]-map[R][C], 2));
-							}
-						} else { // 현 위치보다 낮다면 1초 증가
-							if(climbUpTime[nr][nc] > climbUpTime[R][C] + 1) {
-								climbUpTime[nr][nc] = climbUpTime[R][C] + 1;
-							}
-						}
-					}
-				}
-			}
 		}
 	}
 	
