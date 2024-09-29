@@ -11,7 +11,7 @@ import java.util.*;
  * BFS랑 합쳐야하나?
  * 
  */
-public class Main_BAEKJOON_1486_등산_Gold2_000ms {
+public class Main_BAEKJOON_1486_등산_Gold2_1536ms {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	
 	static int INF;
