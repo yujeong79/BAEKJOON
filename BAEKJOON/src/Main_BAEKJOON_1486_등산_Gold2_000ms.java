@@ -69,7 +69,7 @@ public class Main_BAEKJOON_1486_등산_Gold2_000ms {
 				highest = map[R][C];
 			}
 			
-			//System.out.println(i + "에서 하산하면 " + (climbUpTime[R][C]+climbDownTime[0][0]) + "시간 소요");
+//			System.out.println(i + "에서 하산하면 " + (climbUpTime[R][C]+climbDownTime[0][0]) + "시간 소요");
 //			for(int[] t : climbDownTime) {
 //				System.out.println(Arrays.toString(t));
 //			}
@@ -92,11 +92,11 @@ public class Main_BAEKJOON_1486_등산_Gold2_000ms {
 		
 		boolean[][] isVisited = new boolean[N][M];
 		
-		for(int i = departure; i >= 0; i--) {
+		for(int i = 0; i < lastPoint; i++) {
 			int min = INF;
 			int curr = -1;
 			
-			for(int j = departure; j >= 0; j--) {
+			for(int j = 0; j < lastPoint; j++) {
 				R = j / M;
 				C = j % M;
 				if(!isVisited[R][C] && climbDownTime[R][C] < min) {
