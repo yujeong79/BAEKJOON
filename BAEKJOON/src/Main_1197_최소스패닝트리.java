@@ -23,7 +23,7 @@ public class Main_1197_최소스패닝트리 {
 	
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	static int V, E;
-	static Edge[] edges;
+	static PriorityQueue<Edge> edges;
 	static int[] p;
 	
 	public static void main(String[] args) throws IOException {
@@ -33,7 +33,7 @@ public class Main_1197_최소스패닝트리 {
 		
 		//////////////////////////////////////////////////////////////////
 		// 초기화 작업
-		edges = new Edge[E];
+		edges = new PriorityQueue<>();
 		p = new int[V+1];
 		//////////////////////////////////////////////////////////////////
 		
@@ -43,10 +43,8 @@ public class Main_1197_최소스패닝트리 {
 			int v2 = Integer.parseInt(st.nextToken());
 			int w = Integer.parseInt(st.nextToken());
 			
-			edges[i] = new Edge(v1, v2, w);
+			edges.add(new Edge(v1, v2, w));
 		}
-		
-		Arrays.sort(edges);
 		
 		for(int i = 1; i <= V; i++) {
 			p[i] = i;
@@ -55,14 +53,16 @@ public class Main_1197_최소스패닝트리 {
 		int pickedEdgeCnt = 0;
 		int minWeight = 0;
 		
-		for(int i = 0; i < E; i++) {
-			int p1 = findset(edges[i].V1);
-			int p2 = findset(edges[i].V2);
+		while(!edges.isEmpty()) {
+			Edge curr = edges.poll();
+			
+			int p1 = findset(curr.V1);
+			int p2 = findset(curr.V2);
 			
 			if(p1 != p2) {
 				union(p1, p2);
 				pickedEdgeCnt++;
-				minWeight += edges[i].W;
+				minWeight += curr.W;
 			}
 		}
 		
