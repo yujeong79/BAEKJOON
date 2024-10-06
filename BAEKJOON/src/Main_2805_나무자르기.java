@@ -19,8 +19,6 @@ public class Main_2805_나무자르기 {
             maxTree = Math.max(maxTree, trees[i]);
         }
 
-        // 11 + 20 31/2 15
-
         // 절단기의 최소 높이 H를 이분탐색을 통해 찾아보자
         int L = 0;
         int R = maxTree;
