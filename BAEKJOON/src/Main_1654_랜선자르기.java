@@ -24,9 +24,9 @@ public class Main_1654_랜선자르기 {
 		// 최대 랜선의 길이를 이분 탐색으로 찾아보자
 		long L = 0;
 		long R = maxK;
-		long mid = (L+R)/2;
+		long mid = (L+R+1)/2;
 		while(L <= R && mid <= maxK && mid > 0) {
-			int cnt = 0;
+			long cnt = 0;
 			
 			for(int i = 0; i < K; i++) {
 				cnt += LAN[i]/mid;
@@ -39,7 +39,7 @@ public class Main_1654_랜선자르기 {
 				R = mid-1;
 			}
 			
-			mid = (L+R)/2;
+			mid = (L+R+1)/2;
 		}
 		
 		System.out.println(answer);
