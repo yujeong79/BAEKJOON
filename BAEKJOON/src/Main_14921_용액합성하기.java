@@ -17,21 +17,23 @@ public class Main_14921_용액합성하기 {
 		
 		Arrays.sort(solutions);
 		
-		answer = 200000000;
+		answer = Integer.MAX_VALUE;
 		
 		int L = 0;
 		int R = N-1;
 		while(L < R) {
-			int sum = Math.abs(solutions[L] + solutions[R]);
-			if(sum < answer) {
+			int sum = solutions[L] + solutions[R];
+			if(Math.abs(sum) < Math.abs(answer)) {
 				answer = sum;
 			}
 			
-			if(sum >= answer) {
+			if(sum > 0) {
 				R--;
 			} else {
 				L++;
 			}
 		}
+		
+		System.out.println(answer);
 	} // end of main
 } // end of class
