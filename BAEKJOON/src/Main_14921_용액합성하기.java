@@ -15,8 +15,6 @@ public class Main_14921_용액합성하기 {
 			solutions[i] = Integer.parseInt(st.nextToken());
 		}
 		
-		Arrays.sort(solutions);
-		
 		answer = Integer.MAX_VALUE;
 		
 		int L = 0;
@@ -29,7 +27,7 @@ public class Main_14921_용액합성하기 {
 			
 			if(sum > 0) {
 				R--;
-			} else {
+			} else { 
 				L++;
 			}
 		}
