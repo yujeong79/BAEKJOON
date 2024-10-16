@@ -93,6 +93,7 @@ public class Main_16236_아기상어 {
 						if(map[nr][nc] >= 1 && map[nr][nc] < shark.size) { // 먹을 수 있는 물고기면
 							eatableFish.add(new Fish(nr, nc)); // 먹을 수 있는 목록에 추가
 						}
+						
 					}
 				}
 			}
@@ -106,7 +107,7 @@ public class Main_16236_아기상어 {
 				shark.c = fish.c;
 				shark.cnt++; // 먹은 물고기의 수 1 증가
 				
-				if(shark.cnt == shark.size) shark.size++; // 자신의 크기만큼 물고기를 먹으면 크기가 1 증가한다.
+				if(shark.cnt == shark.size) shark.size++; // 자신의 크기 만큼 물고기를 먹으면 크기가 1 증가한다.
 			}
 		}
 	}
