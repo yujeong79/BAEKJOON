@@ -12,15 +12,13 @@ import java.util.*;
 
 public class Main_16236_아기상어 {
 	static class Fish implements Comparable<Fish>{
-		int r, c, size, dist, cnt;
+		int r, c, size, cnt;
 		
 		public Fish() {}
 		
-		public Fish(int r, int c, int size, int dist) {
+		public Fish(int r, int c) {
 			this.r = r;
 			this.c = c;
-			this.size = size;
-			this.dist = dist;
 		}
 
 		@Override
@@ -28,16 +26,11 @@ public class Main_16236_아기상어 {
 			if(this.r == o.r) return this.c - o.c;
 			return this.r - o.r;
 		}
-
-		@Override
-		public String toString() {
-			return "(" + r + ", " + c + ")";
-		}
 		
 	}
 	
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static int N, fishCnt, callMom;
+	static int N, callMom;
 	static int[][] map;
 	static Fish shark;
 	
@@ -52,15 +45,15 @@ public class Main_16236_아기상어 {
 			for(int j = 0; j < N; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
 				if(map[i][j] == 9) { // 상어의 위치와 사이즈 저장
-					map[i][j] = 0;
+					map[i][j] = 0; // 처음 상어의 위치는 물고기가 아니므로 물고기의 크기를 0으로 바꿔놓자
 					shark.r = i;
 					shark.c = j;
 					shark.size = 2;
-				} else if(map[i][j] != 0) fishCnt++; // 물고기의 수 세어놓기
+				}
 			}
 		}
 		
-		while(fishCnt > 0) {
+		while(true) {
 			if(!BFS(shark.r, shark.c)) { // 현재 상어의 위치에서부터 탐색해서 먹을 수 있는 물고기가 이제 없다면
 				break;
 			}
@@ -77,22 +70,23 @@ public class Main_16236_아기상어 {
 		List<Fish> eatableFish = new ArrayList<>(); // 먹을 수 있는 물고기의 좌표를 저장하자
 		
 		Queue<Fish> queue = new LinkedList<>();
-		queue.add(new Fish(r, c, 0, 0)); // 처음 상어의 위치는 물고기가 없으므로 size를 0으로 하자
+		queue.add(new Fish(r, c)); // 처음 상어의 위치는 물고기가 없으므로 size를 0으로 하자
 		isVisited[r][c] = true;
+		
+		int dist = 0;
 		
 		while(!queue.isEmpty()) {
 			int qSize = queue.size();
 			
 			for(int i = 0; i < qSize; i++) {
 				Fish curr = queue.poll();
-				
 			
 				for(int d = 0; d < 4; d++) {
 					int nr = curr.r + dir[d][0];
 					int nc = curr.c + dir[d][1];
 					
 					if(nr >= 0 && nr < N && nc >= 0 && nc < N && map[nr][nc] <= shark.size && !isVisited[nr][nc]) {
-						Fish next = new Fish(nr, nc, map[nr][nc], curr.dist+1);
+						Fish next = new Fish(nr, nc);
 						queue.add(next);
 						isVisited[nr][nc] = true;
 						
@@ -102,6 +96,8 @@ public class Main_16236_아기상어 {
 					}
 				}
 			}
+			
+			dist++;
 			
 			if(eatableFish.size() > 0) { // 먹을 수 있는 물고기가 있으면
 				Collections.sort(eatableFish);
@@ -118,7 +114,7 @@ public class Main_16236_아기상어 {
 					shark.cnt = 0;
 				}
 				
-				callMom += fish.dist;
+				callMom += dist;
 				return true;
 			}
 		}
