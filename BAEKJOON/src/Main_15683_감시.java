@@ -44,12 +44,12 @@ public class Main_15683_감시 {
 			}
 		}
 		
-		while(!queue.isEmpty()) {
-			int[] curr = queue.poll();
-			
-			selectDir(curr[0], curr[1]);
-			
-		}
+//		while(!queue.isEmpty()) {
+//			int[] curr = queue.poll();
+//			
+//			selectDir(curr[0], curr[1]);
+//			
+//		}
 		
 		System.out.println(deadZone);
 		
@@ -64,24 +64,6 @@ public class Main_15683_감시 {
 	};
 	
 	static final int[][] dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-	
-	private static void selectDir(int r, int c) { // 방향을 정하는 메서드
-		int camera = map[r][c]-1; // monitorDir의 인덱스
-		int availableDirSize = monitorDir[camera].length; // 가능한 방향의 수
-		int dirCnt = monitorDir[camera][0].length; // 각 카메라가 감시할 수 있는 방향의 수
-		
-		for(int i = 0; i < availableDirSize; i++) {
-			for(int j = 0; j < dirCnt; j++) {
-				int d = monitorDir[camera][i][j];
-				
-				while()
-				
-			}
-		}
-		
-		
-		
-	}
 
 
 } // end of class
