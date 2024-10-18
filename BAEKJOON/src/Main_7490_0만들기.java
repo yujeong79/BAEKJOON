@@ -5,7 +5,7 @@ public class Main_7490_0만들기 {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	static StringBuilder sb = new StringBuilder();
 	
-	static List<String> answerList;
+	//static List<String> answerList;
 	static int N;
 	
 	public static void main(String[] args) throws IOException {
@@ -14,15 +14,15 @@ public class Main_7490_0만들기 {
 		while(++testCase <= T) {			
 			N = Integer.parseInt(br.readLine());
 			
-			answerList = new ArrayList<>();
+			//answerList = new ArrayList<>();
 			
 			backTracking(1, 2, "1", 1, "");
 			
-			Collections.sort(answerList);
+			//Collections.sort(answerList);
 			
-			for(String str : answerList) {
-				sb.append(str);
-			}
+//			for(String str : answerList) {
+//				sb.append(str);
+//			}
 			
 			sb.append("\n");
 			
@@ -33,16 +33,10 @@ public class Main_7490_0만들기 {
 	private static void backTracking(int left, int right, String str, int result, String op) {
 		if(right > N) {
 			if(result == 0) {
-				answerList.add(str + "\n");
+				sb.append(str + "\n");
 			}
 			return;
 		}
-		
-		// + 연산
-		backTracking(left+1, right+1, str+"+"+right, result+right, "+");
-		
-		// - 연산
-		backTracking(left+1, right+1, str+"-"+right, result-right, "-");
 		
 		// ' ' 연산
 		switch(op) {
@@ -53,6 +47,13 @@ public class Main_7490_0만들기 {
 			backTracking(left+1, right+1, str+" "+right, result+left-(left*10+right), "-");
 			break;
 		}
+		
+		// + 연산
+		backTracking(left+1, right+1, str+"+"+right, result+right, "+");
+		
+		// - 연산
+		backTracking(left+1, right+1, str+"-"+right, result-right, "-");
+		
 	}
 
 
