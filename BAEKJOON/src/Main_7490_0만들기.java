@@ -5,12 +5,8 @@ public class Main_7490_0만들기 {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	static StringBuilder sb = new StringBuilder();
 	
+	static List<String> answerList;
 	static int N;
-	static char[] result;
-	
-	public static void init() {
-		result = new char[N-1];
-	}
 	
 	public static void main(String[] args) throws IOException {
 		int T = Integer.parseInt(br.readLine());
@@ -18,81 +14,46 @@ public class Main_7490_0만들기 {
 		while(++testCase <= T) {			
 			N = Integer.parseInt(br.readLine());
 			
-			init();
+			answerList = new ArrayList<>();
 			
-			perm(0);
+			backTracking(1, 2, "1", 1, "");
+			
+			Collections.sort(answerList);
+			
+			for(String str : answerList) {
+				sb.append(str);
+			}
 			
 			sb.append("\n");
+			
 		} // end of testCase
 		System.out.println(sb);
 	} // end of main
-	
-	static final char[] operators = {'+', '-', ' '};
-	
-	private static void perm(int cnt) {
-		if(cnt == N-1) {
-			makeString();
+
+	private static void backTracking(int left, int right, String str, int result, String op) {
+		if(right > N) {
+			if(result == 0) {
+				answerList.add(str + "\n");
+			}
 			return;
 		}
-
-		for(int i = 0; i < 3; i++) {
-			result[cnt] = operators[i];
-			perm(cnt+1);
+		
+		// + 연산
+		backTracking(left+1, right+1, str+"+"+right, result+right, "+");
+		
+		// - 연산
+		backTracking(left+1, right+1, str+"-"+right, result-right, "-");
+		
+		// ' ' 연산
+		switch(op) {
+		case "+":
+			backTracking(left+1, right+1, str+" "+right, result-left+(left*10+right), "+");
+			break;
+		case "-":
+			backTracking(left+1, right+1, str+" "+right, result+left-(left*10+right), "-");
+			break;
 		}
 	}
 
-	private static void makeString() {
-		String str = "";
-		int num = 1;
-		int oIdx = 0;
-		
-		while(num <= N) {
-			str += num + "";
-			
-			if(num < N) {
-				str += result[oIdx];
-			}
-			
-			num++;
-			oIdx++;
-		}
-		
-		if(calculation(str) == 0) {
-			sb.append(str+"\n");
-		}
-		
-		return;
-	}
-
-	private static int calculation(String str) {
-		Queue<String> queue = new LinkedList<>();
-		
-		int size = str.length();
-		int i = 0;
-		while(i < size) {
-			if(i == size-1) {
-				queue.add(str.charAt(i)+"");
-				break;
-			}
-			
-			String left = str.charAt(i)+"";
-			char operator = str.charAt(i+1);
-			if(operator == ' ') {
-				left += str.charAt(i+2)+"";
-				queue.add(left);
-				i += 3;
-				continue;
-			} else {
-				queue.add(left);
-				queue.add(operator+"");
-				
-				i += 2;
-			}
-		}
-		
-		System.out.println(queue.toString());
-		
-		return 0;
-	}
 
 } // end of class
