@@ -14,15 +14,7 @@ public class Main_7490_0만들기 {
 		while(++testCase <= T) {			
 			N = Integer.parseInt(br.readLine());
 			
-			//answerList = new ArrayList<>();
-			
-			backTracking(1, 2, "1", 1, "");
-			
-			//Collections.sort(answerList);
-			
-//			for(String str : answerList) {
-//				sb.append(str);
-//			}
+			backTracking(1, 1, "1", 0, 1);
 			
 			sb.append("\n");
 			
@@ -30,29 +22,23 @@ public class Main_7490_0만들기 {
 		System.out.println(sb);
 	} // end of main
 
-	private static void backTracking(int left, int right, String str, int result, String op) {
-		if(right > N) {
+	private static void backTracking(int idx, int left, String expression, int result, int op) {
+		if(idx >= N) {
+			result += (left*op);
 			if(result == 0) {
-				sb.append(str + "\n");
+				sb.append(expression + "\n");
 			}
 			return;
 		}
 		
 		// ' ' 연산
-		switch(op) {
-		case "+":
-			backTracking(left+1, right+1, str+" "+right, result-left+(left*10+right), "+");
-			break;
-		case "-":
-			backTracking(left+1, right+1, str+" "+right, result+left-(left*10+right), "-");
-			break;
-		}
+		backTracking(idx+1, left*10+(idx+1), expression+" "+Integer.toString(idx+1), result, op);
 		
 		// + 연산
-		backTracking(left+1, right+1, str+"+"+right, result+right, "+");
+		backTracking(idx+1, idx+1, expression+"+"+Integer.toString(idx+1), result+(left*op), 1);
 		
 		// - 연산
-		backTracking(left+1, right+1, str+"-"+right, result-right, "-");
+		backTracking(idx+1, idx+1, expression+"-"+Integer.toString(idx+1), result+(left*op), -1);
 		
 	}
 
