@@ -7,11 +7,19 @@ import java.util.*;
 
 public class Main_1107_리모컨 {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static int N, M, curr, minCnt;
+	static int[] N;
+	static int M, curr, minCnt;
 	static boolean[] buttons = new boolean[10];
 	
 	public static void main(String[] args) throws IOException {
-		N = Integer.parseInt(br.readLine()); // 이동하려고 하는 채널
+		String str = br.readLine();
+		int nSize = str.length();
+		
+		N = new int[nSize];
+		
+		for(int i = 0; i < nSize; i++) {
+			N[i] = str.charAt(i)-'0';
+		}
 		
 		M = Integer.parseInt(br.readLine()); // 고장난 버튼의 개수
 		
@@ -25,55 +33,9 @@ public class Main_1107_리모컨 {
 			}
 		}
 		
-		minCnt = Integer.MAX_VALUE;
-		curr = 0;
-		
-		while(curr <= N) { // 현재 채널이 N번이 될 때까지
-			char[] channelArr = (curr+"").toCharArray();
-			boolean flag = true;
-			
-			for(int i = 0; i < channelArr.length; i++) {
-				int idx = channelArr[i] - '0';
-				if(!buttons[idx]) {
-					flag = false;
-					break;
-				}
-			}
-			
-			if(flag) {
-				int cnt = N - curr + (curr+"").length();
-				minCnt = Math.min((cnt), minCnt);
-			}
-				
-			curr++;
-		}
-		
-		curr = N + minCnt;
-		
-		while(curr >= N) {
-			char[] channelArr = (curr+"").toCharArray();
-			boolean flag = true;
-			
-			for(int i = 0; i < channelArr.length; i++) {
-				int idx = channelArr[i] - '0';
-				if(!buttons[idx]) {
-					flag = false;
-					break;
-				}
-			}
-			
-			if(flag) {
-				int cnt = curr - N + (curr+"").length();
-				minCnt = Math.min((cnt), minCnt);
-			}
-				
-			curr--;
-		}
+		// 사용할 수 있는 버튼을 사용해서 최대한 N과 가까운 숫자를 만들어보자.
 		
 		
-		minCnt = Math.min(Math.abs(minCnt), Math.abs(N-100));
-		
-		System.out.println(minCnt);
 		
 	} // end of main
 } // end of class
