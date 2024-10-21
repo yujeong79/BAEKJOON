@@ -13,11 +13,29 @@ public class Main_17951_흩날리는시험지속에서내평점이느껴진거�
 	static int[] papers;
 	
 	public static void main(String[] args) throws IOException {
-		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+		StringTokenizer st = new StringTokenizer(br.readLine(), " "); // (1 ≤ K ≤ N ≤ 105)
 		N = Integer.parseInt(st.nextToken()); // 시험지의 개수 
-		K = Integer.parseInt(st.nextToken()); // 시험지를 난루 그룹의 수
+		K = Integer.parseInt(st.nextToken()); // 시험지를 나눌 그룹의 수, (0 ≤ x ≤ 20)
 		
 		papers = new int[N];
+		st = new StringTokenizer(br.readLine(), " ");
+		for(int i = 0; i < N; i++) {
+			papers[i] = Integer.parseInt(st.nextToken());
+		}
+		
+		int paperCnt = N / K; // 한 그룹당 시험지의 수
+		
+		int[] groupScore = new int[K];
+		
+		for(int i = 0; i < N; i+=paperCnt) {
+			for(int j = 0; j < paperCnt; j++) {
+				groupScore[i/paperCnt] += papers[i+j];
+			}
+		}
+		
+		Arrays.sort(groupScore);
+		
+		System.out.println(groupScore[0]);
 		
 	} // end of main
 } // end of class
