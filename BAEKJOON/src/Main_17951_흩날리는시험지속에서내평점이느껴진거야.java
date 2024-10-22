@@ -1,15 +1,10 @@
 import java.io.*;
 import java.util.*;
 
-/**
- * 시험지를 현재 순서 그대로 K개의 그룹으로 나눈 뒤
- * 각각의 그룹에서 맞은 문제 개수의 합을 구하여 그 중 최솟값이 시험 점수이다.
- * 이번 시험에서 받을 수 있는 최대 점수를 계산하는 프로그램을 작성하자.
- */
 
 public class Main_17951_흩날리는시험지속에서내평점이느껴진거야 {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static int N, K;
+	static int N, K, min, max, mid, answer;
 	static int[] papers;
 	
 	public static void main(String[] args) throws IOException {
@@ -18,24 +13,41 @@ public class Main_17951_흩날리는시험지속에서내평점이느껴진거�
 		K = Integer.parseInt(st.nextToken()); // 시험지를 나눌 그룹의 수, (0 ≤ x ≤ 20)
 		
 		papers = new int[N];
+		min = Integer.MAX_VALUE;
+		max = 0;
 		st = new StringTokenizer(br.readLine(), " ");
 		for(int i = 0; i < N; i++) {
 			papers[i] = Integer.parseInt(st.nextToken());
+			min = Math.min(min, papers[i]); // 최솟값 설정
+			max += papers[i];
 		}
 		
-		int paperCnt = N / K; // 한 그룹당 시험지의 수
-		
-		int[] groupScore = new int[K];
-		
-		for(int i = 0; i < N; i+=paperCnt) {
-			for(int j = 0; j < paperCnt; j++) {
-				groupScore[i/paperCnt] += papers[i+j];
+		while(min <= max) {
+			mid = (min + max) / 2;
+			if(possible()) {
+				answer = mid;
+				min = mid + 1;
+			} else {
+				max = mid - 1;
 			}
 		}
 		
-		Arrays.sort(groupScore);
-		
-		System.out.println(groupScore[0]);
+		System.out.println(answer);
 		
 	} // end of main
+
+	private static boolean possible() {
+		int count = 0;
+		int currArrSum = 0;
+		
+		for(int p : papers) {
+			currArrSum += p;
+			if(currArrSum >= mid) {
+				count++;
+				currArrSum = 0;
+			}
+		}
+		
+		return count >= K;
+	}
 } // end of class
