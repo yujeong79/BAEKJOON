@@ -2,7 +2,8 @@ import java.io.*;
 import java.util.*;
 
 /**
- * 1년 마다 빙산을 녹이는 메서드와 BFS	
+ * 1년 마다 빙산을 녹이고 => findIceberg와 melt 메서드
+ * 빙산 덩어리의 수를 세기 => countArea와 BFS 메서드	
  */
 
 public class Main_2573_빙산 {
@@ -18,42 +19,36 @@ public class Main_2573_빙산 {
 		M = Integer.parseInt(st.nextToken());
 		
 		map = new int[N][M];
-		iceberg = new boolean[N][M];
+		iceberg = new boolean[N][M]; // 해당 좌표가 빙산인지 아닌지를 저장하는 2차원 배열
 		
 		for(int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine(), " ");
 			for(int j = 0; j < M; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
 				if(map[i][j] != 0) {
-					icebergCnt++;
+					icebergCnt++; // 빙산의 수 세기
 					iceberg[i][j] = true; // 해당 좌표가 빙산이면 true
 				}
 			}
 		}
 		
 		year = 0;
-		isDivided = false;
+		isDivided = false; // 빙산 덩어리의 수가 1개이면 false, 2 덩어리 이상이면 true
 		
-		countArea();
+		countArea(); // 첫 상태부터 두 덩어리일 수도 있으니까 덩어리 수를 먼저 세어본다.
 		
-		while(!isDivided && icebergCnt > 0) {
-//			System.out.println(icebergCnt);
+		while(!isDivided && icebergCnt > 0) { // 두 덩어리로 나뉘어졌거나 모든 빙산이 다 녹을 때까지 반복
 			
-			findIceberg();
+			findIceberg(); // 빙산을 찾아 녹인다.
 			
-//			for(int[] m : map) {
-//				System.out.println(Arrays.toString(m));
-//			}
-			
-//			System.out.println(icebergCnt);
-			if(icebergCnt > 0) {
+			if(icebergCnt > 0) { // 빙산이 이미 다 녹은 경우 덩어리를 세지 않는다. (반례)
 				countArea();
 				year++;
 			}
 			
 		}
 		
-		if(icebergCnt == 0 && !isDivided) System.out.println(0);
+		if(icebergCnt == 0 && !isDivided) System.out.println(0); // 빙산 덩어리가 2개 이상이 아니지만 모든 빙산이 다 녹은 경우
 		else System.out.println(year);
 		
 	} // end of main
@@ -68,14 +63,14 @@ public class Main_2573_빙산 {
 			for(int j = 1; j < M-1; j++) {
 				if(map[i][j] > 0 && !isVisited[i][j]) {
 					
-					if(cnt >= 1) {
+					if(cnt >= 1) { // BFS를 이미 한 번 돌린 상태라는 것은 빙산 덩어리가 2개 이상이라는 것
 						isDivided = true;
 						return;
 					}
 					
 					BFS(i, j);
 					cnt++;
-				} else if(map[i][j] == 0 && iceberg[i][j]) { // 빙산이 다 녹았으면 해당 좌표를 false로 변경
+				} else if(map[i][j] == 0 && iceberg[i][j]) { // melt를 통해 빙산이 다 녹았으면 해당 좌표를 false로 변경
 					iceberg[i][j] = false;
 				}
 			}
@@ -108,7 +103,7 @@ public class Main_2573_빙산 {
 	private static void findIceberg() {
 		for(int i = 1; i < N-1; i++) {
 			for(int j = 1; j < M-1; j++) {
-				if(map[i][j] > 0) { // 해당 좌표가 빙산이라면 바닷물이 접해있는 부분 세기
+				if(map[i][j] > 0) { // 해당 좌표가 빙산이라면 빙산 녹이기
 					melt(i, j);
 				}
 			}
@@ -126,7 +121,7 @@ public class Main_2573_빙산 {
 				
 			}
 		}
-		if(map[r][c] == 0) icebergCnt--;
+		if(map[r][c] == 0) icebergCnt--; // 빙하가 다 녹았다면 빙산의 수 1 감소
 	}
 
 	
