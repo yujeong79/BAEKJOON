@@ -42,6 +42,7 @@ public class Main_10816_숫자카드2 {
 				int L = mid-1;
 				int cnt = 0;
 				
+				// 여기서 어떻게 while문을 안씀?
 				while(L >= 0 && cards[L] == num) L--; // num과 같은 숫자 중 가장 왼쪽의 위치를 찾아서
 				
 				while(++L < N && cards[L] == num) {
