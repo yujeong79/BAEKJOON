@@ -25,51 +25,42 @@ public class Main_2295_세수의합 {
 		answer = 0;
 		isSelected = new boolean[N];
 		result = new int[3];
-		comb(0, 0, 0);
+		comb(0, 0);
 		
 		System.out.println(answer);
 		
 	} // end of main
 
-	private static void comb(int cnt, int idx, int sum) {
-		if(cnt >= 3) {
-			System.out.println(Arrays.toString(result));
-			binarySearch(sum);
-			return;
-		}
-		
+	private static void comb(int cnt, int sum) {
 		if(sum > max) {
 			return;
 		}
 		
-		for(int i = idx; i < N; i++) {
-			if(!isSelected[i]) {
-				isSelected[i] = true;
-				result[cnt] = nums[i];
-				
-				comb(cnt+1, idx+1, sum+nums[i]);
-				
-				isSelected[i] = false;
-			}
+		if(cnt >= 3) {
+			binarySearch(sum);
+			return;
 		}
 		
+		for(int i = 0; i < N; i++) {
+			result[cnt] = nums[i];
+			comb(cnt+1, sum+nums[i]);			
+		}
 	}
 
 	private static void binarySearch(int sum) {
-//		System.out.println(sum);
-//		int start = 0;
-//		int end = N-1;
-//		
-//		while(start <= end) {
-//			int mid = (start+end)/2;
-//			
-//			if(nums[mid] == sum) {
-//				answer = Math.max(answer, sum);
-//				return;
-//			}
-//			else if(nums[mid] > sum) start = mid;
-//			else if(nums[mid] < sum) end = mid;
-//		}
+		int start = 0;
+		int end = N-1;
+		
+		while(start <= end) {
+			int mid = (start+end)/2;
+			
+			if(nums[mid] == sum) {
+				answer = Math.max(answer, sum);
+				return;
+			}
+			else if(nums[mid] > sum) end = mid-1;
+			else if(nums[mid] < sum) start = mid+1;
+		}
 		
 	}
 } // end of class
