@@ -2,65 +2,63 @@ import java.io.*;
 import java.util.*;
 
 /**
- * 세 수를 조합으로 찾아서 합을 구한 뒤, 해당 숫자가 집합에 있는지 이분탐색으로 찾는다.
+ * nums의 두 수를 합친 temp 배열을 만들고 nums[i] - nums[j]가 temp 배열에 있는지 이분탐색
  */
 
 public class Main_2295_세수의합 {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static int N, max, answer; 
-	static int[] nums, result; // N개의 자연수로 이루어진 집합
-	static boolean[] isSelected;
+	static int N; 
+	static int[] nums, temp;
 	
 	public static void main(String[] args) throws IOException {
 		N = Integer.parseInt(br.readLine()); // (5 ≤ N ≤ 1,000)
 		
 		nums = new int[N];
+		temp = new int[N*(N+1)/2];
+		
 		for(int i = 0; i < N; i++) {
 			nums[i] = Integer.parseInt(br.readLine());
 		}
 		
 		Arrays.sort(nums);
-		max = nums[N-1];
 		
-		answer = 0;
-		isSelected = new boolean[N];
-		result = new int[3];
-		comb(0, 0);
+		int idx = 0;
+		for(int i = 0; i < N; i++) {
+			for(int j = i; j < N; j++) {
+				temp[idx++] = nums[i]+nums[j];
+			}
+		}
 		
-		System.out.println(answer);
+		Arrays.sort(temp);
+		
+		boolean flag = false;
+		
+		for(int i = N-1; i > 0 && !flag; i--) {
+			for(int j = 0; j < i && !flag; j++) {
+				if(binarySearch(nums[i]-nums[j])) {
+					flag = true;
+					System.out.println(nums[i]);
+				}
+			}
+		}
+		
 		
 	} // end of main
 
-	private static void comb(int cnt, int sum) {
-		if(sum > max) {
-			return;
-		}
-		
-		if(cnt >= 3) {
-			binarySearch(sum);
-			return;
-		}
-		
-		for(int i = 0; i < N; i++) {
-			result[cnt] = nums[i];
-			comb(cnt+1, sum+nums[i]);			
-		}
-	}
-
-	private static void binarySearch(int sum) {
+	private static boolean binarySearch(int num) {
 		int start = 0;
-		int end = N-1;
+		int end = temp.length-1;
 		
 		while(start <= end) {
 			int mid = (start+end)/2;
 			
-			if(nums[mid] == sum) {
-				answer = Math.max(answer, sum);
-				return;
-			}
-			else if(nums[mid] > sum) end = mid-1;
-			else if(nums[mid] < sum) start = mid+1;
+			if(temp[mid] == num) return true;
+			else if(temp[mid] > num) end = mid - 1;
+			else if(temp[mid] < num) start = mid + 1;
 		}
 		
+		return false;
+		
 	}
+
 } // end of class
