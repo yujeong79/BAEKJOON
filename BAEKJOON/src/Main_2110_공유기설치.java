@@ -9,7 +9,7 @@ import java.util.*;
  */
 public class Main_2110_공유기설치 {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static int N, C, min, max;
+    static int N, C, min, max, answer;
     static int[] house;
     public static void main(String[] args) throws IOException {
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
@@ -24,13 +24,40 @@ public class Main_2110_공유기설치 {
         Arrays.sort(house); // 집의 좌표를 오름차순으로 정렬
         
         max = house[N-1] - house[0]; // 좌표의 최댓값과 최솟값의 차이를 max로 설정
-        min = Integer.MAX_VALUE;
-        for(int i = 0; i < N-1; i++) { // 이웃한 집 간의 거리가 가장 짧은 값을 min으로 설정
-        	min = Math.min(house[i+1] - house[i], min);
-        } // 그런데 min을 굳이 이렇게까지 찾아야할까? 일단 해보자.
+        min = 0;
         
+        while(min <= max) {
+        	int mid = (min + max)/2;
+        	
+        	if(isPossible(mid)) {
+        		answer = mid;
+        		min = mid + 1;
+        	}
+        	else {
+        		max = mid - 1;
+        	}
+        }
         
-        System.out.println(max + ", " + min);
+        System.out.println(answer);
 
     } // end of main
+    
+	private static boolean isPossible(int dist) {
+		int selectedHouse = 1; // 공유기를 설치한 집의 수
+		int h1 = 0; // 공유기를 설치한 집의 인덱스
+		int h2 = 1; // 공유기를 설치할 다음 집의 인덱스
+		
+		while(selectedHouse < C && h2 <= N-1) {
+			if(house[h2] - house[h1] >= dist) {
+				h1 = h2;
+				selectedHouse++;
+				if(selectedHouse == C) return true;
+			}
+			
+			h2 += 1; // 한 칸 이동
+		}
+		
+		return false;
+	}
+	
 } // end of class
