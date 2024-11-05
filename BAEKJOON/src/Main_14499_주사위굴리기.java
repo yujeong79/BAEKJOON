@@ -70,19 +70,23 @@ public class Main_14499_주사위굴리기 {
     private static final int[][] dir = {{}, {0, 1}, {0, -1}, {-1, 0}, {1, 0}};
 
     private static void moveDice(int d) {
-        int ny = y + dir[d][0];
-        int nx = x + dir[d][1];
+    	int nx = x + dir[d][0];
+        int ny = y + dir[d][1];
 
-        if(nx >= 0 && nx < M && ny >= 0 && ny < N) { // 지도 범위 내에 있으면 주사위를 굴리기
+        if(nx >= 0 && nx < N && ny >= 0 && ny < M) { // 지도 범위 내에 있으면 주사위를 굴리기
             x = nx; y = ny;
             rollDice(d); // 주사위 굴리기
-
-            if(map[y][x] == 0) {
-                map[y][x] = dice.bottom; // 주사위의 바닥면에 쓰여 있는 수가 헤당 좌표에 복사된다.
+            
+            if(map[x][y] == 0) {
+                map[x][y] = side[dice.bottom]; // 주사위의 바닥면에 쓰여 있는 수가 헤당 좌표에 복사된다.
             } else {
-                side[dice.bottom] = map[y][x]; // 해당 좌표에 적혀 있는 수가 주사위의 바닥면에 복사된다.
-                map[y][x] = 0; // 해당 좌표는 0이 된다.
+                side[dice.bottom] = map[x][y]; // 해당 좌표에 적혀 있는 수가 주사위의 바닥면에 복사된다.
+                map[x][y] = 0; // 해당 좌표는 0이 된다.
             }
+            
+//            System.out.println("(" + x + ", " + y + ")");
+//            System.out.println(dice);
+//            System.out.println(Arrays.toString(side));
 
             sb.append(side[dice.top]).append("\n");
         }
@@ -126,3 +130,39 @@ public class Main_14499_주사위굴리기 {
     }
 
 } // end of class
+
+/**
+ * 반례
+3 5 1 2 30
+6 7 3 1 4
+4 8 0 5 8
+1 2 9 6 2
+3 4 1 2 2 2 1 4 3 4 1 3 4 3 3 2 4 2 2 4 2 4 2 1 3 1 3 3 4 1
+
+답
+0 
+0
+0
+0
+5
+0 * 여기가 틀림
+5
+3
+5
+3
+4
+5
+4
+5
+9
+3
+5
+4
+7
+5
+4
+1
+2
+1
+8
+ */
