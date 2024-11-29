@@ -28,10 +28,8 @@ public class Main_3020_개똥벌레 {
 		int min = N;
 		int cnt = 0;
 		for(int h = 1; h <= H; h++) {
-			int upCnt = binarySearch(h); // 현재 구간에서 파괴해야하는 석순의 개수
-			int downCnt = findDownCount(H-h+1); // 현재 구간에서 파괴해야 하는 종유석의 개수
-
-			System.out.println(h + "구간에서 파괴해야하는 석순의 수 : " + upCnt + ", 종유석의 수 : " + downCnt);
+			int upCnt = halfN-binarySearch(up, h); // 현재 구간에서 파괴해야하는 석순의 개수
+			int downCnt = halfN-binarySearch(down, H-h+1); // 현재 구간에서 파괴해야 하는 종유석의 개수
 
 			int total = upCnt + downCnt;
 			if(total == min) { // 파괴해야하는 장애물의 수가 최소이면
@@ -42,42 +40,20 @@ public class Main_3020_개똥벌레 {
 			}
 		}
 
-		System.out.println(min + " " + cnt);
+		System.out.println(min + " " + cnt); // ddd
 
 	} // end of main
 
-	public static int binarySearch(int h) {
+	public static int binarySearch(int[] arr, int h) {
 		int start = 0;
-		int end = halfN-1;
+		int end = halfN;
 
-		while(start <= end) {
+		// lower 구하기
+		while(start < end) {
 			int mid = (start + end) / 2;
-			if(up[mid] < h) end = mid - 1;
-			else start = mid + 1;
-		}
-		int upper = start;
 
-		// 1 3 5
-		start = 0;
-		end = halfN - 1;
-		while(start <= end) {
-			int mid = (start + end) / 2;
-			if(up[mid] > h) start = mid + 1;
-			else end = mid - 1;
-		}
-		int lower = start;
-
-		return upper - lower;
-	}
-
-	public static int findDownCount(int h) {
-		int start = 0;
-		int end = halfN-1;
-
-		while(start <= end) {
-			int mid = (start + end) / 2;
-			if(down[mid] < h) end = mid - 1;
-			else start = mid + 1;
+			if (arr[mid] < h) start = mid + 1;
+			else end = mid;
 		}
 
 		return start;
