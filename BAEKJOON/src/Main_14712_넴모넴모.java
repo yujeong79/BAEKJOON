@@ -26,67 +26,47 @@ public class Main_14712_넴모넴모 {
         }
 
         if(r >= N) {
+            answer++;
             return;
         }
 
-        // 1. (r, c)가 false인 상태로 2*2 정사각형 유무를 체크
-        for(int i = r; i < N; i++) {
-            for(int j = c; j < M; j++) {
-                if(isSquare(i, j)) { // 현재 좌표가 반시계 방향으로 2*2 정사각형을 이루고 있으면
-                    board[i][j] = false;
-
-                    backTracking(i, j);
-                    board[i][j] = true; // 원상복구
-                }
-            }
-        }
-
-        answer++;
-        for(boolean[] b : board) {
-            System.out.println(Arrays.toString(b));
-        }
-        System.out.println(answer + "개");
-
-        // 2. (r, c)가 true인 상태로 2*2 정사각형 유무를 체크
+        // 현상태가 2*2 정사각형을 이루는 배치가 아닐 경우
         board[r][c] = true;
-        for(int i = r; i < N; i++) {
-            for(int j = c; j < M; j++) {
-                if(isSquare(i, j)) { // 현재 좌표가 반시계 방향으로 2*2 정사각형을 이루고 있으면
-                    board[i][j] = false;
-
-                    backTracking(i, j);
-                    board[i][j] = true; // 원상복구
-                }
-            }
+        if(!isSquare(r, c)) {
+            backTracking(r, c+1);
         }
 
-        answer++;
-        for(boolean[] b : board) {
-            System.out.println(Arrays.toString(b));
-        }
-        System.out.println(answer + "개");
+        board[r][c] = false;
+        backTracking(r, c+1);
+
     }
 
-    // 빈시계 방향
-    private static final int[][] dir = {{-1, 0}, {-1, -1}, {0, -1}};
+    // [0]:좌 [1]:좌상 [2]:상 [3]:초기 위치 [4]:우 [5]:우하 [6]:하
+    private static final int[][] dir = {{0, -1}, {-1, -1}, {-1, 0}, {0, 0}, {0, 1}, {1, 1}, {1, 0}};
 
-    /**
-     * 해당 좌표에서 반시계방향으로 2*2 정사각형을 이루는지 확인
-     * @param r, @param c, @return
-     */
     private static boolean isSquare(int r, int c) {
         if(!board[r][c]) return false;
 
-        for(int d = 0; d < 3; d++) {
-            int nr = r + dir[d][0];
-            int nc = c + dir[d][1];
+        for(int currD = 0; currD <= 3; currD++) { // 현 위치에서 시계 방향으로 2*2 사각형을 이루는지 체크
+            boolean square = true;
 
-            if(nr < 0 || nr >= N || nc < 0 || nc >= M || !board[nr][nc]) { // 범위를 벗어나거나 넴모넴모가 없는 경우
-                return false;
+            int currR = r + dir[currD][0];
+            int currC = c + dir[currD][1];
+
+            for(int d = 3; d <= 6; d++) {
+                int nr = currR + dir[d][0];
+                int nc = currC + dir[d][1];
+
+                if(nr < 0 || nr >= N || nc < 0 || nc >= M || !board[nr][nc]) {
+                    square = false;
+                    break;
+                }
             }
+
+            if(square) return true;
         }
 
-        return true;
+        return false;
     }
 
 } // end of class
