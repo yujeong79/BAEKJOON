@@ -41,32 +41,21 @@ public class Main_14712_넴모넴모 {
 
     }
 
-    // [0]:좌 [1]:좌상 [2]:상 [3]:초기 위치 [4]:우 [5]:우하 [6]:하
-    private static final int[][] dir = {{0, -1}, {-1, -1}, {-1, 0}, {0, 0}, {0, 1}, {1, 1}, {1, 0}};
+    private static final int[][] dir = {{-1, -1}, {-1, 0}, {0, -1}};
 
     private static boolean isSquare(int r, int c) {
         if(!board[r][c]) return false;
 
-        for(int currD = 0; currD <= 3; currD++) { // 현 위치에서 시계 방향으로 2*2 사각형을 이루는지 체크
-            boolean square = true;
+        for(int d = 0; d <= 2; d++) {
+            int nr = r + dir[d][0];
+            int nc = c + dir[d][1];
 
-            int currR = r + dir[currD][0];
-            int currC = c + dir[currD][1];
-
-            for(int d = 3; d <= 6; d++) {
-                int nr = currR + dir[d][0];
-                int nc = currC + dir[d][1];
-
-                if(nr < 0 || nr >= N || nc < 0 || nc >= M || !board[nr][nc]) {
-                    square = false;
-                    break;
-                }
+            if(nr < 0 || nr >= N || nc < 0 || nc >= M || !board[nr][nc]) {
+                return false;
             }
-
-            if(square) return true;
         }
 
-        return false;
+        return true;
     }
 
 } // end of class
