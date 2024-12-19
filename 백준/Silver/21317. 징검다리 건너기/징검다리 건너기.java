@@ -1,33 +1,36 @@
-import java.util.Arrays;
+import java.io.*;
+import java.util.*;
 
 public class Main {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static int N, K;
+    static int[][] stones;
+    static int[][] dp;
 
-    public static void main(String[] args) throws Exception {
-        int n = read();
-        int[][] arr = new int[n][2];
-        for (int i = 0; i < n - 1; i++)
-            arr[i] = new int[] { read(), read() };
-        int k = read();
-        int[][] dp = new int[n + 3][2];
-        for (int i = 0; i < n + 3; i++)
-            Arrays.fill(dp[i], Integer.MAX_VALUE);
-        dp[0][0] = dp[0][1] = 0;
-        for (int i = 0; i < n - 1; i++) {
-            dp[i + 1][0] = Math.min(dp[i + 1][0], dp[i][0] + arr[i][0]);
-            dp[i + 2][0] = Math.min(dp[i + 2][0], dp[i][0] + arr[i][1]);
-            dp[i + 3][1] = Math.min(dp[i + 3][1], dp[i][0] + k);
-            dp[i + 1][1] = Math.min(dp[i + 1][1], dp[i][1] + arr[i][0]);
-            dp[i + 2][1] = Math.min(dp[i + 2][1], dp[i][1] + arr[i][1]);
+    public static void main(String[] args) throws IOException {
+        N = Integer.parseInt(br.readLine()); // 돌의 수
+
+        dp = new int[Math.max(4, N+1)][2];
+        stones = new int[Math.max(4, N)][2];
+        for(int i = 1; i < N; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+            int lower = Integer.parseInt(st.nextToken());
+            int higher = Integer.parseInt(st.nextToken());
+            stones[i] = new int[] {lower, higher};
         }
-        System.out.println(Math.min(dp[n - 1][0], dp[n - 1][1]));
-    }
 
-    private static int read() throws Exception {
-        int c, n = System.in.read() & 15;
-        while ((c = System.in.read()) >= 48)
-            n = (n << 3) + (n << 1) + (c & 15);
-        if (c == 13)
-            System.in.read();
-        return n;
-    }
-}
+        K = Integer.parseInt(br.readLine());
+
+        dp[2][1] = dp[3][1] = 10000;
+        dp[2][0] = stones[1][0];
+        dp[3][0] = Math.min(dp[2][0] + stones[2][0], dp[1][0] + stones[1][1]);
+
+        for(int i = 4; i <= N; i++) {
+            dp[i][0] = Math.min(dp[i-1][0] + stones[i-1][0], dp[i-2][0] + stones[i-2][1]);
+            dp[i][1] = Math.min(Math.min(dp[i-1][1] + stones[i-1][0], dp[i-2][1] + stones[i-2][1]), dp[i-3][0] + K);
+        }
+
+        System.out.println(Math.min(dp[N][0], dp[N][1]));
+
+    } // end of main
+} // end of class
