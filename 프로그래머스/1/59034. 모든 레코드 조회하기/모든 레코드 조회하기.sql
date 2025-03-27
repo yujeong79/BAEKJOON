@@ -1,3 +1,2 @@
--- 코드를 입력하세요
-SELECT * FROM ANIMAL_INS
-ORDER BY ANIMAL_ID ASC;
+SELECT * FROM animal_ins
+ORDER BY animal_id ASC;
