@@ -6,6 +6,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
         int n = Integer.parseInt(st.nextToken());
@@ -31,11 +32,13 @@ public class Main {
                     if(pa != pb) union(pa, pb);
                     break;
                 case "1":
-                    if(pa != pb) System.out.println("NO");
-                    else System.out.println("YES");
+                    if(pa != pb) sb.append("NO").append("\n");
+                    else sb.append("YES").append("\n");
                     break;
             }
         }
+        
+        System.out.println(sb);
     }
 
     public static void union(int pa, int pb) {
