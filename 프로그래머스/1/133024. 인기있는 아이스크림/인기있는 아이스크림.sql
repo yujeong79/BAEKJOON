@@ -1,3 +1,5 @@
--- 코드를 입력하세요
-SELECT flavor FROM first_half
-ORDER BY total_order DESC, shipment_id ASC;
+-- FLAVOR 조회
+-- ORDER BY TOTAL_ORDER 기준 내림차순, SHIPMENT_ID 기준 오름차순
+SELECT FLAVOR
+FROM FIRST_HALF
+ORDER BY TOTAL_ORDER DESC, SHIPMENT_ID;
