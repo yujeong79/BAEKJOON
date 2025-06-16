@@ -1,0 +1,5 @@
+-- 조회 : 물고기의 수 AS FISH_COUNT
+-- 조건 : 길이가 10cm 이하
+SELECT COUNT(*) AS FISH_COUNT
+FROM FISH_INFO
+WHERE LENGTH IS NULL;
