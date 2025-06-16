@@ -1,6 +1,8 @@
-SELECT f.flavor 
-FROM first_half AS f
-JOIN icecream_info AS i
-ON f.flavor = i.flavor
-WHERE total_order >= 3000 AND ingredient_type = 'fruit_based'
-ORDER BY total_order DESC;
+-- 조회 : 맛
+-- 조건 : 총주문량이 3000 초과 && 아이스크림 주 성분이 과일
+-- 정렬 : 총주문량 내림차순
+SELECT F.FLAVOR
+FROM FIRST_HALF AS F 
+LEFT OUTER JOIN ICECREAM_INFO AS I ON F.FLAVOR = I.FLAVOR
+WHERE F.TOTAL_ORDER > 3000 && I.INGREDIENT_TYPE LIKE 'fruit_based'
+ORDER BY TOTAL_ORDER DESC;
