@@ -7,34 +7,38 @@ import java.util.*;
 
 class Solution {
     public long solution(int n, int[] times) {
-        int tSize = times.length;
-        
-        long start = 1L;
-        long end = 1_000_000_000L * 1_000_000_000L;
-        
-        long answer = 0;
-        while(start <= end) {
-            long mid = (start+end)/2;
-            
-            if(binarySearch(n, times, mid)) {
-                end = mid-1;
-                answer = mid;
-            } else {
-                start = mid+1;
-            }    
-        }
-
+        long answer = binarySearch(n, times);
         return answer;
     }
     
-    public static boolean binarySearch(int n, int[] times, long mid) {
-        long sum = 0;
+    public long binarySearch(int n, int[] times) {
+        long start = 1;
+        long end = Arrays.stream(times).max().getAsInt
+            () * (long) n;
+        
+        long answer = end;
+        while(start <= end) {
+            long mid = (start + end) / 2;
+            
+            if(isPossible(mid, n, times)) {
+                answer = mid;
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        }
+        
+        return answer;
+    }
+    
+    public boolean isPossible(long mid, int n, int[] times) {
+        long total = 0;
         
         for(int t : times) {
-            sum += mid / t;    
-            if(sum >= n) return true;
+            total += mid / t;
+            if(total >= n) return true;
         }
-    
+        
         return false;
     }
 }
