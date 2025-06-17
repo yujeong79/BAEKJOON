@@ -1,0 +1,5 @@
+-- 조회 : 잡은 물고기 수 AS FISH_COUNT
+-- 조건 : 2021년도 잡은 물고기
+SELECT COUNT(*) AS FISH_COUNT
+FROM FISH_INFO
+WHERE YEAR(TIME) = '2021';
