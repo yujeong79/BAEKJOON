@@ -1,2 +1,2 @@
--- 코드를 입력하세요
-SELECT COUNT(*) AS count FROM animal_ins;
+SELECT COUNT(*) AS COUNT
+FROM ANIMAL_INS;
