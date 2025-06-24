@@ -1,4 +1,6 @@
--- 코드를 입력하세요
-SELECT product_id, product_name, product_cd, category, price
-FROM food_product
-WHERE price = (SELECT MAX(price) FROM food_product);
+-- 조회 : PRODUCT_ID, PRODUCT_NAME, PRODUCT_CD, CATEGORY, PRICE
+-- 조건 : 가격이 제일 비싼 식품
+SELECT PRODUCT_ID, PRODUCT_NAME, PRODUCT_CD, CATEGORY, PRICE
+FROM FOOD_PRODUCT
+ORDER BY PRICE DESC
+LIMIT 1;
