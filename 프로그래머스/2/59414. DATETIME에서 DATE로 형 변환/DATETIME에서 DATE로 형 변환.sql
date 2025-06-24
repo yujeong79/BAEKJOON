@@ -1,0 +1,5 @@
+-- 조회 : 아이디, 이름, 날짜
+-- 정렬 : 아이디 기준
+SELECT ANIMAL_ID, NAME, DATE_FORMAT(DATETIME, '%Y-%m-%d') AS '날짜'
+FROM ANIMAL_INS
+ORDER BY ANIMAL_ID;
