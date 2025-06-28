@@ -1,5 +1,7 @@
-SELECT COUNT(*) AS fish_count
-FROM fish_info AS info
-JOIN fish_name_info AS name
-ON info.fish_type = name.fish_type
-WHERE name.fish_name IN ('BASS', 'SNAPPER');
+-- 조회 : BASS와 SNAPPER의 수 AS FISH_COUNT
+SELECT SUM(CNT) AS FISH_COUNT
+FROM (SELECT FISH_TYPE, COUNT(*) AS CNT
+      FROM FISH_INFO
+      GROUP BY FISH_TYPE
+     ) AS t LEFT JOIN FISH_NAME_INFO n ON t.FISH_TYPE = n.FISH_TYPE
+WHERE FISH_NAME IN ('BASS', 'SNAPPER');
