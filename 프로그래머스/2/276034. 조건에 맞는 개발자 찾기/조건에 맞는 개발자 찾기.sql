@@ -1,4 +1,11 @@
-SELECT id, email, first_name, last_name FROM developers
-WHERE skill_code & (SELECT code FROM skillcodes WHERE name = 'Python')
-OR skill_code & (SELECT code FROM skillcodes WHERE name = 'C#')
-ORDER BY id ASC;
+-- 조회 : 개발자 ID, 이메일, 이름, 성
+-- 조건 : Python이나 C# 스킬
+-- 정렬 : ID 기준
+# SELECT CODE
+# FROM SKILLCODES
+# WHERE NAME IN ('Python', 'C#');
+SELECT ID, EMAIL, FIRST_NAME, LAST_NAME
+FROM DEVELOPERS
+WHERE SKILL_CODE & (SELECT CODE FROM SKILLCODES WHERE NAME = 'Python') > 0 
+    OR SKILL_CODE & (SELECT CODE FROM SKILLCODES WHERE NAME = 'C#') > 0 
+ORDER BY ID;
