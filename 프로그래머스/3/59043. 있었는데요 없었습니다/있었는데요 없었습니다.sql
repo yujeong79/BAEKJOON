@@ -1,5 +1,7 @@
-SELECT INS.ANIMAL_ID, INS.NAME
-FROM ANIMAL_INS AS INS
-LEFT OUTER JOIN ANIMAL_OUTS AS OUTS ON INS.ANIMAL_ID = OUTS.ANIMAL_ID
-WHERE INS.DATETIME > OUTS.DATETIME
-ORDER BY INS.DATETIME ASC;
+-- 조회 : 아이디, 이름
+-- 조건 : 보호 시작일보다 입양일이 더 빠른 동물
+-- 정렬 : 보호시작일 기준
+select o.animal_id, o.name
+from animal_outs o left join animal_ins i on o.animal_id = i.animal_id
+where o.datetime < i.datetime
+order by i.datetime;
