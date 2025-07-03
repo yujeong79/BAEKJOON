@@ -1,0 +1,14 @@
+-- 조회 : 종류, ID, 식당 이름, 즐겨찾기수
+-- 그룹 : 음식 종류
+-- 조건 : 음식 종류별 즐겨찾기 수가 가장 많은 식당
+-- 정렬 : 음식 종류 기준 내림차순
+-- LIMIT : 1
+SELECT FOOD_TYPE, REST_ID, REST_NAME, FAVORITES
+FROM (SELECT FOOD_TYPE, REST_ID, REST_NAME, FAVORITES, 
+        MAX(FAVORITES) OVER(PARTITION BY FOOD_TYPE) AS MAX_FAVORITES
+      FROM REST_INFO
+     ) AS TEMP
+WHERE FAVORITES = MAX_FAVORITES
+ORDER BY FOOD_TYPE DESC; 
+
+
