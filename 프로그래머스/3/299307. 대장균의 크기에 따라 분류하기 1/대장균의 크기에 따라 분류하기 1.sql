@@ -1,7 +1,11 @@
-SELECT id, CASE
-            WHEN size_of_colony > 1000 THEN 'HIGH'
-            WHEN size_of_colony > 100 THEN 'MEDIUM'
-            ELSE 'LOW'
-           END AS size
-FROM ecoli_data
-ORDER BY id ASC;
+-- 조회 : 개체의 크기 100 이하 -> LOW, 100 초과 1000 이하 -> MEDIUM, 1000 초과 -> HIGH
+-- 정렬 : ID 기준
+SELECT ID,
+    CASE
+        WHEN SIZE_OF_COLONY <= 100 THEN 'LOW'
+        WHEN SIZE_OF_COLONY <= 1000 THEN 'MEDIUM'
+        ELSE 'HIGH'
+    END AS SIZE
+FROM ECOLI_DATA
+ORDER BY ID;
+   
