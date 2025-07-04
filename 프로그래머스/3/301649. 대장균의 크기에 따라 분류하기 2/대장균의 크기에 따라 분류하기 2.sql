@@ -1,8 +1,25 @@
-SELECT id, CASE NTILE(4) OVER (ORDER BY size_of_colony DESC)
-            WHEN 1 THEN 'CRITICAL'
-            WHEN 2 THEN 'HIGH'
-            WHEN 3 THEN 'MEDIUM'
-            ELSE 'LOW'
-           END AS colony_name
-FROM ecoli_data
-ORDER BY id ASC;
+-- 조회 : 개체ID, 분류된 이름
+-- 정렬 : 개체ID 기준 오름차순
+SELECT ID, 
+    CASE 
+        WHEN RNK <= TOTAL * 0.25 THEN 'CRITICAL'
+        WHEN RNK <= TOTAL * 0.5 THEN 'HIGH'
+        WHEN RNK <= TOTAL * 0.75 THEN 'MEDIUM'
+        ELSE 'LOW'
+    END AS COLONY_NAME 
+FROM (SELECT ID, 
+        SIZE_OF_COLONY,
+        RANK() OVER(ORDER BY SIZE_OF_COLONY DESC) AS RNK,
+        COUNT(*) OVER() AS TOTAL
+        FROM ECOLI_DATA
+     ) AS TEMP
+ORDER BY ID;
+     
+
+
+# CASE
+#     WHEN RNK <= COUNT(*) * 0.25 THEN 'CRITICAL'
+#     WHEN RNK <= COUNT(*) * 0.5 THEN 'HIGH'
+#     WHEN RNK <= COUNT(*) * 0.75 THEN 'MEDIUM'
+#     ELSE 'LOW'
+# END AS COLONY_NAME
