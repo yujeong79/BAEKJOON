@@ -1,6 +1,6 @@
-SELECT parent.id, IFNULL(COUNT(child.id), 0) AS child_count
-FROM ecoli_data AS parent
-LEFT OUTER JOIN ecoli_data AS child
-ON parent.id = child.parent_id
-GROUP BY parent.id
-ORDER BY parent.id ASC;
+-- 조회 : 개체ID, 자식의 수 AS CHILD_COUNT
+-- 정렬 : 개체ID 기준
+SELECT P.ID, COUNT(C.ID) AS CHILD_COUNT
+FROM ECOLI_DATA P LEFT JOIN ECOLI_DATA C ON P.ID = C.PARENT_ID
+GROUP BY P.ID
+ORDER BY P.ID;
