@@ -1,25 +1,25 @@
 /**
+* 컴퓨터 A와 컴퓨터 B가 직접적으로 연결되어 있고, 
+* 컴퓨터 B와 컴퓨터 C가 직접적으로 연결되어 있을 때
+* 컴퓨터 A와 컴퓨터 C도 간접적으로 연결되어 정보를 교환할 수 있음
+* 컴퓨터의 개수 n, 연결에 대한 정보가 담긴 2차원 배열 computers가 있을 때,
+* 네트워크의 개수를 return 하도록 solution 함수를 작성
+*
 * 1 <= n <= 200
 * computers[i][j] = 1 : i번 컴퓨터와 j번 컴퓨터가 연결 상태
 **/
 import java.util.*;
 
 class Solution {
-    static boolean[] isSelected;
-    static boolean[][] isVisited;
-    static Queue<Integer> queue;
-    static int size;
+    boolean[] isSelected;
     
     public int solution(int n, int[][] computers) {
-        int answer = 0;
-        size = computers.length;
-        isSelected = new boolean[size];
-        isVisited = new boolean[size][size];
-        queue = new LinkedList<>();
+        isSelected = new boolean[n];
         
-        for(int i = 0; i < size; i++) {
-            if(!isSelected[i]) { // 아직 네트워크가 없는 경우
-                bfs(computers, i);
+        int answer = 0;
+        for(int i = 0; i < n; i++) {
+            if(!isSelected[i]) {
+                bfs(computers, n, i);
                 answer++;
             }
         }
@@ -27,24 +27,20 @@ class Solution {
         return answer;
     }
     
-    public static void bfs(int[][] computers, int r) {
-        for(int c = 0; c < size; c++) {
-            if(computers[r][c] == 1) {
-                isVisited[r][c] = true;
-                queue.add(c);    
-            }
-        }
+    public void bfs(int[][] computers, int n, int start) {
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(start);
+        isSelected[start] = true;
         
         while(!queue.isEmpty()) {
             int curr = queue.poll();
-            isSelected[curr] = true;
             
-            for(int c = 0; c < size; c++) {
-                if(computers[curr][c] == 1 && !isVisited[curr][c]) {
-                    isVisited[curr][c] = true;
-                    queue.add(c);    
-                }    
-            } 
+            for(int i = 0; i < n; i++) {
+                if(computers[curr][i] == 1 && !isSelected[i]) {
+                    queue.add(i);
+                    isSelected[i] = true;
+                }
+            }
         }
     }
 }
