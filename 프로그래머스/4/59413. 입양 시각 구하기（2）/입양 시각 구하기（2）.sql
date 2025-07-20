@@ -1,0 +1,17 @@
+-- 조회 : 시간대, 발생한 입양건수
+-- 그룹 : 시간대별
+-- 정렬 : 시간대
+SET @HOUR = -1;
+
+SELECT H.HOUR, IFNULL(COUNT, 0) AS COUNT
+FROM (
+    SELECT @HOUR := @HOUR + 1 AS HOUR
+    FROM ANIMAL_OUTS
+    WHERE @HOUR < 23
+) AS H
+LEFT JOIN (
+    SELECT HOUR(DATETIME) AS HOUR, COUNT(*) AS COUNT
+    FROM ANIMAL_OUTS
+    GROUP BY HOUR
+) AS CNT
+ON H.HOUR = CNT.HOUR;
