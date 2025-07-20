@@ -4,22 +4,15 @@ class Solution {
     public int[] solution(int[] numbers) {
         int size = numbers.length;
         int[] answer = new int[size];
-        Arrays.fill(answer, -1);
+        Stack<Integer> stack = new Stack<>();
         
-        for(int i = size-2; i >= 0; i--) {
-            for(int j = i+1; j < size; j++) {
-                if(numbers[i] >= numbers[j] && answer[j] < 0) break;
-                
-                if(numbers[i] < numbers[j]) {
-                    answer[i] = numbers[j];
-                    break;
-                }
-                
-                else if(numbers[i] < answer[j]) {
-                    answer[i] = answer[j];
-                    break;
-                }   
+        for(int i = size-1; i >= 0; i--) {
+            while(!stack.isEmpty() && stack.peek() <= numbers[i]) {
+                stack.pop();
             }
+            
+            answer[i] = stack.isEmpty() ? -1 : stack.peek();
+            stack.add(numbers[i]);
         }
         
         return answer;
