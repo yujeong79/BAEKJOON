@@ -1,16 +1,12 @@
-WITH temp AS (
-    SELECT sales_date, product_id, user_id, sales_amount
-    FROM online_sale
-    WHERE sales_date BETWEEN '2022-03-01' AND '2022-03-31'
-    
-    UNION ALL
-    
-    SELECT sales_date, product_id, NULL AS user_id, sales_amount
-    FROM offline_sale
-    WHERE sales_date BETWEEN '2022-03-01' AND '2022-03-31'
-)
-
-SELECT DATE_FORMAT(sales_date, '%Y-%m-%d') AS sales_date, product_id, user_id, sales_amount
-FROM temp
-GROUP BY sales_date, user_id, product_id
-ORDER BY sales_date ASC, product_id ASC, user_id ASC;
+-- 조회 : 판매 날짜, 상품 ID, 유저 ID, 판매량
+-- 유저 ID : 오프라인 상품은 NULL
+-- 조건 : 2022년 3월의 판매 상품
+-- 정렬 : 판매일 기준, 상품 ID, 유저 ID
+SELECT DATE_FORMAT(SALES_DATE, '%Y-%m-%d') AS SALES_DATE, PRODUCT_ID, USER_ID, SALES_AMOUNT
+FROM (SELECT SALES_DATE, PRODUCT_ID, USER_ID, SALES_AMOUNT
+        FROM ONLINE_SALE
+        UNION ALL
+        SELECT SALES_DATE, PRODUCT_ID, NULL, SALES_AMOUNT
+        FROM OFFLINE_SALE) AS T
+WHERE DATE_FORMAT(SALES_DATE, '%Y%m') = '202203'
+ORDER BY SALES_DATE, PRODUCT_ID, USER_ID;
