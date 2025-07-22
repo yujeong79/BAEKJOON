@@ -1,6 +1,23 @@
--- 코드를 작성해주세요
-SELECT id FROM ecoli_data
-WHERE parent_id IN (SELECT id FROM ecoli_data
-                    WHERE parent_id IN (SELECT id FROM ecoli_data
-                                        WHERE parent_id IS NULL))
-ORDER BY id ASC;
+-- 조회 : ID
+-- 조건 : 3세대 대장균
+-- 정렬 : 대장균 ID 기준
+SELECT C.ID
+FROM (
+    SELECT ID
+    FROM ECOLI_DATA
+    WHERE PARENT_ID IS NULL
+) AS A
+LEFT JOIN (
+    SELECT ID, PARENT_ID
+    FROM ECOLI_DATA
+) AS P
+ON A.ID = P.PARENT_ID
+JOIN (
+    SELECT ID, PARENT_ID
+    FROM ECOLI_DATA
+) AS C
+ON P.ID = C.PARENT_ID
+ORDER BY C.ID;
+
+
+
