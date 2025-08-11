@@ -1,21 +1,13 @@
 import java.io.*;
 import java.util.*;
 
-/*
-    1번. 벨트가 각 칸 위에 있는 로봇과 함께 한 칸 회전한다.
-    2번. 가장 먼저 벨트에 올라간 로봇부터, 벨트가 회전하는 방향으로 한 칸 이동한다.
-        - 이동하기 위해서는 이동하려는 칸에 로봇이 없으며, 내구도가 1 이상이어야 한다.
-        - 이동할 수 없다면 가만히 있는다.
-    3번. 올리는 위치에 있는 칸의 내구도가 0이 아니면 올리는 위치에 로봇을 올린다.
-    4번. 내구도가 0인 칸의 개수가 K개 이상이라면 종료한다.
- */
-
 public class Main {
-    static class Robot {
-        int idx;
+    static class Cell {
+        int durability;
+        boolean hasRobot;
 
-        public Robot(int idx) {
-            this.idx = idx;
+        public Cell(int durability) {
+            this.durability = durability;
         }
     }
 
@@ -26,14 +18,11 @@ public class Main {
         int K = Integer.parseInt(st.nextToken()); // 1 ≤ K ≤ 2N
 
         int doubleN = 2*N;
-        int[] conveyor = new int[doubleN];
+        Cell[] conveyor = new Cell[doubleN];
         st = new StringTokenizer(br.readLine(), " ");
         for(int i = 0; i < doubleN; i++) {
-            conveyor[i] = Integer.parseInt(st.nextToken());
+            conveyor[i] = new Cell(Integer.parseInt(st.nextToken()));
         }
-
-        Queue<Robot> robots = new LinkedList<>();
-        boolean[] hasRobot = new boolean[doubleN];
 
         int start = 0;
         int end = N-1;
@@ -47,39 +36,43 @@ public class Main {
             end = (end+doubleN-1) % doubleN;
 
             // 벨트가 회전하여 내리는 위치에 로봇이 도달하면 그 즉시 하차
-            if(!robots.isEmpty() && robots.peek().idx == end) {
-                robots.poll();
-                hasRobot[end] = false;
+            if(conveyor[end].hasRobot) {
+                conveyor[end].hasRobot = false;
             }
 
-            for(Robot robot : robots) {
-                int nextIdx = (robot.idx+1)%doubleN;
-                if(conveyor[nextIdx] > 0 && !hasRobot[nextIdx]) { // 다음 칸이 내구도가 1 이상이고 로봇이 없다면
-                    hasRobot[robot.idx] = false;
+            int currRobot = end > 0 ? end-1 : doubleN-1;
+            while(true) {
+                if(!conveyor[currRobot].hasRobot) {
+                    if(currRobot == start) break;
 
-                    robot.idx = nextIdx; // 로봇 이동
-                    hasRobot[robot.idx] = true;
-                    conveyor[robot.idx]--; // 내구도 1 감소
-                    if(conveyor[robot.idx] <= 0) count++; // 내구도가 0 이하라면 count 1 증가
+                    if(currRobot-1 < 0) currRobot = doubleN-1;
+                    else currRobot--;
 
-                    // 내리는 위치에 로봇이 도달하면 즉시 하차
-                    if(robots.peek().idx == end) {
-                        hasRobot[end] = false;
-                    }
+                    continue;
                 }
-            }
 
-            while(!robots.isEmpty() && robots.peek().idx == end) {
-                robots.poll();
+                int nextIdx = (currRobot+1) % doubleN;
+                if(conveyor[nextIdx].durability > 0 && !conveyor[nextIdx].hasRobot) { // 다음 칸이 내구도가 1 이상이고 로봇이 없다면
+                    conveyor[currRobot].hasRobot = false;
+                    conveyor[nextIdx].hasRobot = true;
+                    conveyor[nextIdx].durability--; // 내구성 1 감소
+
+                    if(conveyor[nextIdx].durability <= 0) count++; // 내구도가 0 이하라면 count 1 증가
+                    if(nextIdx == end) conveyor[nextIdx].hasRobot = false; // 내리는 위치에 로봇이 도달하면 즉시 하차
+                }
+
+                if(currRobot == start) break;
+
+                if(currRobot-1 < 0) currRobot = doubleN-1;
+                else currRobot--;
             }
 
             // 올리는 위치의 내구도가 1 이상인 경우 로봇 올리기
-            if(conveyor[start] > 0) {
-                conveyor[start]--;
-                hasRobot[start] = true;
-                robots.add(new Robot(start));
+            if(conveyor[start].durability > 0) {
+                conveyor[start].durability--;
+                conveyor[start].hasRobot = true;
 
-                if(conveyor[start] <= 0) count++; // 내구도가 0 이하라면 count 1 증가
+                if(conveyor[start].durability <= 0) count++; // 내구도가 0 이하라면 count 1 증가
             }
         }
 
