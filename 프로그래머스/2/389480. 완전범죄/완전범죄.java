@@ -1,29 +1,32 @@
 import java.util.*;
 
 class Solution {
-    int answer;
-    boolean[][][] dp;
+    static int answer;
+    static boolean[][][] memoization;
+    static int[][] tInfo;
     
     public int solution(int[][] info, int n, int m) {
-        answer = n + 1;
-        dp = new boolean[info.length][n+1][m+1];
-        dfs(info, 0, 0, 0, n, m);
+        tInfo = info;
+        answer = n;
         
-        return answer > n ? -1 : answer;
+        memoization = new boolean[info.length][n][m];
+        DFS(0, 0, 0, n, m);
+        
+        return answer >= n ? -1 : answer;
     }
     
-    public void dfs(int[][] info, int idx, int a, int b, int n, int m) {
-        if(a >= n || b >= m) return;
+    public static void DFS(int idx, int aSum, int bSum, int n, int m) {
+        if(aSum >= n || bSum >= m) return;
         
-        if(idx >= info.length) {
-            answer = Math.min(answer, a);
+        if(idx >= tInfo.length) {
+            answer = Math.min(answer, aSum);
             return;
         }
         
-        if(dp[idx][a][b]) return;
-        dp[idx][a][b] = true;
+        if(memoization[idx][aSum][bSum]) return;
+        memoization[idx][aSum][bSum] = true;
         
-        dfs(info, idx+1, a + info[idx][0], b, n, m);
-        dfs(info, idx+1, a, b + info[idx][1], n, m);
+        DFS(idx+1, aSum+tInfo[idx][0], bSum, n, m);
+        DFS(idx+1, aSum, bSum+tInfo[idx][1], n, m);
     }
 }
