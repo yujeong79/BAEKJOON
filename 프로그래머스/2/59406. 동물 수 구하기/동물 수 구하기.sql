@@ -1,2 +1,3 @@
-SELECT COUNT(*) AS COUNT
+-- 조회 : 동물의 수 AS COUNT
+SELECT COUNT(*) AS count
 FROM ANIMAL_INS;
