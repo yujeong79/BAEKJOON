@@ -1,6 +1,7 @@
--- 조회 : 동물 이름 중 두 번 이상 쓰인 이름과 횟수 
--- 정렬 : 이름 기준
-SELECT NAME, COUNT(NAME) AS COUNT
+-- 조회 : NAME, COUNT
+-- 그룹 : NAME
+-- 정렬 : NAME
+SELECT NAME, COUNT(*) AS COUNT
 FROM ANIMAL_INS
 GROUP BY NAME
 HAVING COUNT(NAME) >= 2
