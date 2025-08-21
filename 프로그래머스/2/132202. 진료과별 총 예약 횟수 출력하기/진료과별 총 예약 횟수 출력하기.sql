@@ -1,10 +1,10 @@
--- 조회 : 진료과코드 AS '진료과 코드', 환자 수 AS '5월예약건수'
+-- 조회 : 진료과코드, 환자 수
+-- 조건 : 2022년 5월 예약
 -- 그룹 : 진료과코드
--- 조건 : 2022년 5월에 예약한 환자
--- 정렬 : 환자 수 기준 오름차순, 진료콰 코드 기준 오름차순
-SELECT MCDP_CD AS '진료과코드', 
-    COUNT(DISTINCT(PT_NO)) AS '5월예약건수'
-FROM APPOINTMENT
-WHERE DATE_FORMAT(APNT_YMD, '%Y%m') = '202205'
-GROUP BY MCDP_CD
-ORDER BY COUNT(*), MCDP_CD;
+-- 정렬 : 환자 수 기준, 진료과 코드 기준
+select mcdp_cd as '진료과코드', count(pt_no) as '5월예약건수'
+from appointment
+where date_format(apnt_ymd, '%Y%m') = '202205'
+group by mcdp_cd
+order by count(pt_no), mcdp_cd;
+
