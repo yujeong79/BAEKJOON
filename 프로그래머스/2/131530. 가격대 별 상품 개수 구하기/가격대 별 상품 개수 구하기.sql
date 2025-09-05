@@ -1,7 +1,9 @@
--- 조회 : 가격대별 최소 금액, 가격대별 상품 개수
--- 그룹 : 만원 단위의 가격대별로 그룹
+-- 조회 : 만원 단위의 가격대 AS PRICE_GROUP, 상품 개수 AS PRODUCTS
+-- 그룹 : 만원 단위의 가격대
 -- 정렬 : 가격대 기준
-SELECT FLOOR(PRICE/10000)*10000 AS PRICE_GROUP, COUNT(PRODUCT_ID) AS PRODUCTS
+
+SELECT FLOOR(PRICE / 10000) * 10000 AS PRICE_GROUP,
+    COUNT(*) AS PRODUCTS
 FROM PRODUCT
 GROUP BY PRICE_GROUP
 ORDER BY PRICE_GROUP;
