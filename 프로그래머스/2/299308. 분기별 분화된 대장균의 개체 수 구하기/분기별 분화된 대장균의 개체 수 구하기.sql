@@ -1,8 +1,8 @@
--- 조회 : 분기, 분기별 분화된 대장균의 개체의 총 수 AS ECOLI_COUNT
--- 분기 : + Q
--- 정렬 : 분기 기준 오름차순
-SELECT
-    CONCAT(QUARTER(DIFFERENTIATION_DATE), 'Q') AS QUARTER,
+-- 조회 : 분기, 총 수
+-- 분기 : 분기+Q
+-- 정렬 : 분기 기준
+
+SELECT CONCAT(QUARTER(DIFFERENTIATION_DATE), 'Q') AS QUARTER,
     COUNT(*) AS ECOLI_COUNT
 FROM ECOLI_DATA
 GROUP BY QUARTER
