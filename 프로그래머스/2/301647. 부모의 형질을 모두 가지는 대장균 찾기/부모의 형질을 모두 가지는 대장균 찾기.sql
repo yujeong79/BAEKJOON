@@ -1,7 +1,8 @@
--- 조회 : 대장균의 ID, 대장균의 형질, 부모 대장균의 형질
+-- 조회 : ID, 형질, 부모 대장균의 형질
 -- 조건 : 부모의 형질을 모두 보유한 대장균
--- 정렬 : ID 기준 
-select c.id, c.genotype, p.genotype as parent_genotype
-from ecoli_data c left join ecoli_data p on c.parent_id = p.id
-where c.genotype & p.genotype = p.genotype
-order by c.id;
+-- 정렬 : ID 기준
+
+SELECT C.ID AS ID, C.GENOTYPE AS GENOTYPE, P.GENOTYPE AS PARENT_GENOTYPE
+FROM ECOLI_DATA C LEFT JOIN ECOLI_DATA P ON C.PARENT_ID = P.ID
+WHERE C.GENOTYPE & P.GENOTYPE = P.GENOTYPE
+ORDER BY C.ID;
