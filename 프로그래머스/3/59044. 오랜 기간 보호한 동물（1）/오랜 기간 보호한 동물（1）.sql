@@ -1,9 +1,10 @@
--- 조회 : 이름, 보호시작일
+-- 조회 : 이름, 보호 시작일
 -- 조건 : 입양을 못 간 동물
 -- 정렬 : 보호 시작일 기준
--- LIMIT : 3
+-- 리밋 : 3마리
+
 SELECT I.NAME, I.DATETIME
 FROM ANIMAL_INS I LEFT JOIN ANIMAL_OUTS O ON I.ANIMAL_ID = O.ANIMAL_ID
 WHERE O.ANIMAL_ID IS NULL
-ORDER BY DATETIME
+ORDER BY I.DATETIME
 LIMIT 3;
