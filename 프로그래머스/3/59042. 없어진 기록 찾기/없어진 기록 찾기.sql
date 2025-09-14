@@ -1,7 +1,8 @@
--- 조회 : ID, 이름
--- 조건 : 입양을 갔는데 보호소에 들어온 기록이 없는 동물
--- 정렬 : ID 기준
+-- 조회: 동물ID, 이름
+-- 조건 : 입양 간 기록은 있는데, 보호소에 들어온 기록이 없는 동물
+-- 정렬 : 동물ID 기준
+
 SELECT O.ANIMAL_ID, O.NAME
-FROM ANIMAL_OUTS O LEFT JOIN ANIMAL_INS I ON O.ANIMAL_ID = I.ANIMAL_ID
+FROM ANIMAL_INS I RIGHT JOIN ANIMAL_OUTS O ON I.ANIMAL_ID = O.ANIMAL_ID
 WHERE I.ANIMAL_ID IS NULL
 ORDER BY O.ANIMAL_ID;
