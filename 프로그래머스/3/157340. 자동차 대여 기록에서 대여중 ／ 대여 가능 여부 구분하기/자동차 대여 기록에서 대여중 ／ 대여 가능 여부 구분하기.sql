@@ -1,10 +1,11 @@
--- 조회 : 자동차 ID, 대여 가능 여부 AS AVAILABILITY
--- 대여 가능 여부 : 2022년 10월 16일 대여 중 -> 대여중, ELSE -> 대여 가능
--- 정렬 : 자동차 ID 기준 내림차순
-SELECT CAR_ID,
-     IF(CAR_ID IN (SELECT CAR_ID FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY 
-                   WHERE '2022-10-16' BETWEEN START_DATE AND END_DATE),
-        '대여중', '대여 가능') AS AVAILABILITY
+-- 조회 : 자동차ID, AVAILLABILITY
+-- AVAILABILITY : 2022년 10월 16일에 대여 중 -> 대여중, ELSE -> 대여가능
+-- 정렬 : 자동차ID 기준 내림차순
+
+SELECT DISTINCT(CAR_ID),
+    IF(CAR_ID IN (SELECT DISTINCT(CAR_ID)
+                    FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
+                    WHERE START_DATE <= '2022-10-16' AND END_DATE >= '2022-10-16'),
+       '대여중', '대여 가능') AS AVAILABILITY
 FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
-GROUP BY CAR_ID
 ORDER BY CAR_ID DESC;
