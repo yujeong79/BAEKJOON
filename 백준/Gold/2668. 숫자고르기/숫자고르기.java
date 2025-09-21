@@ -5,14 +5,14 @@ public class Main {
 	static int N;
 	static int[] arr;
 	
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
 		
-		N = sc.nextInt(); // 1 ≤ N ≤ 100
+		N = Integer.parseInt(br.readLine()); // 1 ≤ N ≤ 100
 		arr = new int[N+1];
 		for(int i = 1; i <= N; i++) {
-			arr[i] = sc.nextInt();
+			arr[i] = Integer.parseInt(br.readLine());
 		}
 		
 		List<Integer> answer = new ArrayList<>();
@@ -30,7 +30,7 @@ public class Main {
 	}
 
 	public static boolean isCycle(int num) {
-        boolean[] isVisited = new boolean[N+1];
+    boolean[] isVisited = new boolean[N+1];
 		isVisited[num] = true;
 		int visitedCnt = 1;
 		
