@@ -1,7 +1,5 @@
--- 조회 : 아이디, 이름
--- 조건 : 이름에 el이 들어감
--- 정렬 : 이름순
-SELECT ANIMAL_ID, NAME
-FROM ANIMAL_INS
-WHERE NAME LIKE '%el%' && ANIMAL_TYPE = 'Dog'
-ORDER BY NAME;
+select animal_id, name
+from animal_ins
+where animal_type regexp 'Dog+'
+    and name regexp 'el+'
+order by name;
