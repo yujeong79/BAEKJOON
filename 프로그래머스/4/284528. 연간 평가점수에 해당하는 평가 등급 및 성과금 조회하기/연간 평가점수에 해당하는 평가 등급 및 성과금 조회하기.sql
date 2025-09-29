@@ -1,21 +1,21 @@
--- 조회 : 사번, 성명, 평가 등급, 성과금
--- 그룹 : 
--- 정렬 : 사번 기준
+-- 조회 : 사번, 성명, 평가 등급 AS GRADE, 성과금 AS BONUS
+-- 정렬 : 서번 기준
 
-SELECT T.EMP_NO,
+SELECT E.EMP_NO,
     EMP_NAME,
-    CASE
-        WHEN GRADE >= 96 THEN 'S'
-        WHEN GRADE >= 90 THEN 'A'
-        WHEN GRADE >= 80 THEN 'B'
+    CASE 
+        WHEN AVG(SCORE) >= 96 THEN 'S'
+        WHEN AVG(SCORE) >= 90 THEN 'A'
+        WHEN AVG(SCORE) >= 80 THEN 'B'
         ELSE 'C'
     END AS GRADE,
-    CASE 
-        WHEN GRADE >= 96 THEN SAL*0.2
-        WHEN GRADE >= 90 THEN SAL*0.15
-        WHEN GRADE >= 80 THEN SAL*0.1
+    CASE
+        WHEN AVG(SCORE) >= 96 THEN SAL*0.2
+        WHEN AVG(SCORE) >= 90 THEN SAL*0.15
+        WHEN AVG(SCORE) >= 80 THEN SAL*0.1
         ELSE 0
     END AS BONUS
-FROM (SELECT EMP_NO, AVG(SCORE) AS GRADE FROM HR_GRADE GROUP BY EMP_NO) AS T
-    LEFT JOIN HR_EMPLOYEES E ON T.EMP_NO = E.EMP_NO
-ORDER BY T.EMP_NO;
+FROM HR_GRADE G JOIN HR_EMPLOYEES E ON G.EMP_NO = E.EMP_NO
+GROUP BY E.EMP_NO
+ORDER BY E.EMP_NO;
+
