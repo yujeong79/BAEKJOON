@@ -1,7 +1,3 @@
--- 조회 : 판매 날짜, 상품 ID, 유저 ID, 판매량
--- 유저 ID : 오프라인 상품은 NULL
--- 조건 : 2022년 3월의 판매 상품
--- 정렬 : 판매일 기준, 상품 ID, 유저 ID
 SELECT DATE_FORMAT(SALES_DATE, '%Y-%m-%d') AS SALES_DATE, PRODUCT_ID, USER_ID, SALES_AMOUNT
 FROM (SELECT SALES_DATE, PRODUCT_ID, USER_ID, SALES_AMOUNT
         FROM ONLINE_SALE
