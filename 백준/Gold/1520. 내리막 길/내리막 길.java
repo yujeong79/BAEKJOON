@@ -1,72 +1,56 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
 public class Main {
-	static int M, N;
-	static int[][] arr, dp;
-	static int[] rangeX = { -1, 0, 1, 0 };
-	static int[] rangeY = { 0, 1, 0, -1 };
-
-	public static void main(String[] args) throws NumberFormatException, IOException {
+	static int N, M; // 1 <= N, M <= 500
+	static int[][] map;
+	static int[][] routes;
+	static int[][] dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+	
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-
+		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+		N = Integer.parseInt(st.nextToken()); 
 		M = Integer.parseInt(st.nextToken());
-		N = Integer.parseInt(st.nextToken());
-
-		arr = new int[M + 1][N + 1];
-		for (int i = 1; i <= M; i++) {
-			st = new StringTokenizer(br.readLine());
-
-			for (int j = 1; j <= N; j++) {
-				arr[i][j] = Integer.parseInt(st.nextToken());
+		
+		map = new int[N][M];
+		for(int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine(), " ");
+			for(int j = 0; j < M; j++) {
+				map[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
-
-		dp = new int[M + 1][N + 1]; // (x, y)에서 도착점으로 가는 경로의 개수
-		for (int i = 1; i <= M; i++) {
-			for (int j = 1; j <= N; j++) {
-				dp[i][j] = -1;
-			}
+		
+		routes = new int[N][M];
+		for(int i = 0; i < N; i++) {
+			Arrays.fill(routes[i], -1);
 		}
-
-		bw.write(DFS(1, 1) + "\n");
-		bw.flush();
-		bw.close();
-		br.close();
+		
+		dfs(0, 0);
+		
+		System.out.println(routes[0][0]);
 	}
-
-	public static int DFS(int x, int y) {
-		if (x == M && y == N) {
+	
+	public static int dfs(int r, int c) {
+		if(r == N-1 && c == M-1) {
 			return 1;
 		}
-
-		if (dp[x][y] != -1) {
-			return dp[x][y];
+		
+		if(routes[r][c] != -1) { // 해당 지점에서 경로가 있다면 반환, 여기 if문에 걸린다는 것은 이미 이 지점에서 목적지까지 가능한 경로를 모두 찾은 후이다. 
+			return routes[r][c];
 		}
-
-		dp[x][y] = 0; // 현재 위치에서 끝점까지 도달하는 경로의 개수를 0으로 초기화.
-		for (int i = 0; i < 4; i++) {
-			int dx = x + rangeX[i];
-			int dy = y + rangeY[i];
-
-			if (dx < 1 || dy < 1 || dx > M || dy > N) {
-				continue;
-			}
+		
+		routes[r][c] = 0;
+		for(int d = 0; d < 4; d++) {
+			int nr = r + dir[d][0];
+			int nc = c + dir[d][1];
 			
-			// arr[x][y]보다 arr[dx][dy]가 높이가 더 낮다면
-			// arr[dx][dy]에서 끝점까지 도달하는 경로의 개수를 더한다.
-			if (arr[x][y] > arr[dx][dy]) {
-				dp[x][y] += DFS(dx, dy);
-			}
+			if(nr < 0 || nr >= N || nc < 0 || nc >= M || map[r][c] <= map[nr][nc]) 
+				continue;
+			
+			routes[r][c] += dfs(nr, nc);
 		}
-
-		return dp[x][y];
+		
+		return routes[r][c];
 	}
-
 }
