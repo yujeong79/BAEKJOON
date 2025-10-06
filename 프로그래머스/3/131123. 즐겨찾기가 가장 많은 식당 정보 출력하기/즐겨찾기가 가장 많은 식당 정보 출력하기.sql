@@ -1,13 +1,18 @@
--- 조회 : 음식 종류, ID, 식당 이름, 즐겨찾기 수
--- 조건 : 음식 종류별로 즐겨찾기 수가 가장 많은 식당
--- 그룹 : 음식 종류
--- 정렬 : 음식 기준 내림차순
+-- 조회 : 음식 종류, ID, 식당이름, 즐겨찾기 수
+-- 조건 : 음식 종류별 즐겨찾기 수가 가장 많은 식당
+-- 그룹 : 음식 종류별
+-- 정렬 : 음식 종류 기준 내림차순
+
+WITH CTE1 AS (
+    SELECT REST_ID,
+        RANK() OVER(PARTITION BY FOOD_TYPE ORDER BY FAVORITES DESC) AS RNK
+    FROM REST_INFO
+), CTE2 AS (
+    SELECT FOOD_TYPE, I.REST_ID, REST_NAME, FAVORITES
+    FROM CTE1 C1 LEFT JOIN REST_INFO I ON C1.REST_ID = I.REST_ID
+    WHERE RNK = 1
+)
 
 SELECT FOOD_TYPE, REST_ID, REST_NAME, FAVORITES
-FROM REST_INFO
-WHERE (FOOD_TYPE, FAVORITES) IN (SELECT FOOD_TYPE, MAX(FAVORITES)
-                                FROM REST_INFO
-                                GROUP BY FOOD_TYPE)
+FROM CTE2
 ORDER BY FOOD_TYPE DESC;
-
-
