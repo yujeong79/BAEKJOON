@@ -1,12 +1,17 @@
--- 조회: ID, NAME, HOST_ID
--- 그룹: HOST_ID
--- 해빙: 개수가 2 이상
--- 정렬: ID 기준
+-- 조회 : ID, NAME, HOST_ID
+-- 조건 : 공간을 둘 이상 등록한 사람
+-- 정렬 : ID 기준
 
-SELECT ID, NAME, HOST_ID
-FROM PLACES
-WHERE HOST_ID IN (SELECT HOST_ID
-                    FROM PLACES
-                    GROUP BY HOST_ID
-                    HAVING COUNT(*) >= 2)
+WITH CTE1 AS (
+    SELECT HOST_ID
+    FROM PLACES
+    GROUP BY HOST_ID
+    HAVING COUNT(*) >= 2
+), CTE2 AS (
+    SELECT ID, NAME, P.HOST_ID
+    FROM PLACES P JOIN CTE1 C1 ON P.HOST_ID = C1.HOST_ID
+)
+
+SELECT *
+FROM CTE2
 ORDER BY ID;
