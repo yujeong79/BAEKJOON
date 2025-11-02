@@ -29,13 +29,10 @@ public class Main {
 	
 	public static int dfs(int startR, int startC, int endR, int endC) {
 		Queue<int[]> queue = new LinkedList<>();
-		int[][] isVisited = new int[l][l];
-		for(int[] line : isVisited) {
-			Arrays.fill(line, Integer.MAX_VALUE);
-		}
+		boolean[][] isVisited = new boolean[l][l];
 		
 		queue.add(new int[] {startR, startC, 0});
-		isVisited[startR][startC] = 0;
+		isVisited[startR][startC] = true;
 		
 		while(!queue.isEmpty()) {
 			int[] curr = queue.poll();
@@ -47,11 +44,11 @@ public class Main {
 				int nr = curr[0] + dir[d][0];
 				int nc = curr[1] + dir[d][1];
 				
-				if(nr < 0 || nr >= l || nc < 0 || nc >= l || isVisited[nr][nc] <= curr[2]+1)
+				if(nr < 0 || nr >= l || nc < 0 || nc >= l || isVisited[nr][nc])
 					continue;
 				
 				queue.add(new int[] {nr, nc, curr[2]+1});
-				isVisited[nr][nc] = curr[2]+1;
+				isVisited[nr][nc] = true;
 			}
 		}
 		
